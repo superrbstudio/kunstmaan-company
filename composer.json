@@ -1,0 +1,22 @@
+{
+    "name": "superrb/kunstmaan-company",
+    "description": "Company bundle for use with KunstmaanBundles CMS",
+    "keywords": [
+        "cms"
+    ],
+    "homepage": "https://gitlab.superrb.com/kuma/KunstmaanCompanyBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Superrb Team",
+            "email": "tech@superrb.com"
+        }
+    ],
+    "require": {
+        "kunstmaan/bundles-cms": "~5.0"
+    },
+    "autoload": {
+        "psr-4": {"Superrb\\": "src/Superrb/"}
+    },
+    "minimum-stability": "dev"
+}
