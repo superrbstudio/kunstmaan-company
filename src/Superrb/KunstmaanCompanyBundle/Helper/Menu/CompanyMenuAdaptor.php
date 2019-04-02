@@ -25,35 +25,5 @@ class CompanyMenuAdaptor implements MenuAdaptorInterface
             }
             $children[] = $menuItem;
         }
-
-        // if (is_null($parent)) {
-        //     $menuItem = new TopMenuItem($menu);
-        //     $menuItem
-        //         ->setRoute('superrbkunstmaansocialmediabundle_admin_social_false')
-        //         ->setLabel('Social Media')
-        //         ->setUniqueId('Social Media')
-        //         ->setFolder(true)
-        //         ->setParent($parent);
-        //     if (stripos($request->attributes->get('_route'), $menuItem->getRoute()) === 0) {
-        //         $menuItem->setActive(true);
-        //     }
-        //     $children[] = $menuItem;
-        // }
-
-        // if (!is_null($parent) && 'superrbkunstmaansocialmediabundle_admin_social_false' == $parent->getRoute()) {
-        //     // Social Media Posts
-        //     $menuItem = new TopMenuItem($menu);
-        //     $menuItem
-        //         ->setRoute('superrbkunstmaansocialmediabundle_admin_social')
-        //         ->setLabel('Social Media Posts')
-        //         ->setUniqueId('Social Media Posts')
-        //         ->setParent($parent);
-        //     if ($request->attributes->get('_route') == 'superrbkunstmaansocialmediabundle_admin_social') {
-        //         $menuItem->setActive(true);
-        //         $parent->setActive(true);
-        //     }
-        //     $children[] = $menuItem;
-
-        // }
     }
 }
