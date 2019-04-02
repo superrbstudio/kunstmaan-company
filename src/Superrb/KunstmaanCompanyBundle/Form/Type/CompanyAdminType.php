@@ -44,11 +44,14 @@ class CompanyAdminType extends AbstractType
           ])->add('lng', TextType::class, [
               'required' => true,
           ])->add('facebook', TextType::class, [
+              'label'    => 'Facebook URL',
               'required' => false,
           ])->add('twitter', TextType::class, [
-              'required' => false,
+                'label'    => 'Twitter URL',
+                'required' => false,
           ])->add('instagram', TextType::class, [
-              'required' => false,
+                'label'    => 'Instagram URL',
+                'required' => false,
           ])->add('email', EmailType::class, [
               'required' => true,
           ])->add('phone', TextType::class, [
