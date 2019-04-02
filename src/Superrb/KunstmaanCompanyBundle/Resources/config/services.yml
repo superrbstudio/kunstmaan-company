@@ -1,0 +1,5 @@
+services:
+    SuperrbKunstmaanCompanyBundle.menu.adaptor.company:
+        class: Superrb\KunstmaanCompanyBundle\Helper\Menu\CompanyMenuAdaptor
+        tags:
+            -  { name: 'kunstmaan_admin.menu.adaptor' }

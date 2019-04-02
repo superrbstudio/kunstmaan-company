@@ -1,0 +1,8 @@
+{% extends 'KunstmaanAdminBundle:Default:layout.html.twig' %}
+{% form_theme form 'KunstmaanAdminBundle:Form:fields.html.twig' %}
+
+{% block content %}
+  <br>
+  {{ form_start(form) }}
+  {{ form_end(form) }}
+{% endblock %}
