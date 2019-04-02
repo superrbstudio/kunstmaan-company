@@ -11,11 +11,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class CompanyAdminListController extends Controller
 {
     /**
-     * @Route("/", name="company_index")
+     * @Route("/", name="superrbkunstmaancompanybundle_admin_company")
      *
      * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
     {
@@ -28,7 +26,7 @@ class CompanyAdminListController extends Controller
         }
 
         $form = $this->createForm(CompanyAdminType::class, $company, [
-            'action' => $this->generateUrl('company_index'),
+            'action' => $this->generateUrl('superrbkunstmaancompanybundle_admin_company'),
             'method' => 'POST',
         ]);
 
@@ -40,7 +38,7 @@ class CompanyAdminListController extends Controller
                 $this->getDoctrine()->getManager()->flush();
                 $this->addFlash('success', $this->get('translator')->trans('kuma_social.forms.social.messages.add_success'));
 
-                return $this->redirect($this->generateUrl('company_index'));
+                return $this->redirect($this->generateUrl('superrbkunstmaancompanybundle_admin_company'));
             }
         }
 

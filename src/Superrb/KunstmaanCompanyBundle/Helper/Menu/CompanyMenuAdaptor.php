@@ -15,7 +15,7 @@ class CompanyMenuAdaptor implements MenuAdaptorInterface
         if (is_null($parent)) {
             $menuItem = new TopMenuItem($menu);
             $menuItem
-                ->setRoute('company_index')
+                ->setRoute('superrbkunstmaancompanybundle_admin_company')
                 ->setLabel('Company')
                 ->setUniqueId('Company')
                 ->setFolder(true)
