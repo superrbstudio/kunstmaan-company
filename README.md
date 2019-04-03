@@ -39,7 +39,7 @@ class AppKernel extends Kernel
 Add the following to your `app/config/routing.yml`
 
 ```yml
-superrbkunstmaansocialmediabundle_company_admin_list:
+superrbkunstmaancompanybundle_company_admin_list:
     resource: '@SuperrbKunstmaanCompanyBundle/Controller/CompanyAdminListController.php'
     type:     annotation
     prefix:   /admin/company
