@@ -102,6 +102,20 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     /**
      * @var string|null
      *
+     * @ORM\Column(name="youtube", type="string", length=255, nullable=true)
+     */
+    private $youtube;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="vimeo", type="string", length=255, nullable=true)
+     */
+    private $vimeo;
+
+    /**
+     * @var string|null
+     *
      * @ORM\Column(name="phone", type="string", length=255, nullable=true)
      * @Assert\NotBlank()
      */

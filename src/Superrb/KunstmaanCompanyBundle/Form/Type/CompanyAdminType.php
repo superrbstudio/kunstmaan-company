@@ -29,37 +29,43 @@ class CompanyAdminType extends AbstractType
         parent::buildForm($builder, $options);
         $builder->add('companyName', TextType::class, [
             'required' => true,
-          ])->add('streetAddress', TextType::class, [
+        ])->add('streetAddress', TextType::class, [
+        'required' => true,
+        ])->add('addressLocality', TextType::class, [
             'required' => true,
-          ])->add('addressLocality', TextType::class, [
-              'required' => true,
-          ])->add('addressRegion', TextType::class, [
-              'required' => true,
-          ])->add('postcode', TextType::class, [
-              'required' => true,
-          ])->add('addressCountry', TextType::class, [
-              'required' => true,
-          ])->add('lat', TextType::class, [
-              'required' => true,
-          ])->add('lng', TextType::class, [
-              'required' => true,
-          ])->add('facebook', TextType::class, [
-              'label'    => 'Facebook URL',
-              'required' => false,
-          ])->add('twitter', TextType::class, [
-                'label'    => 'Twitter URL',
-                'required' => false,
-          ])->add('instagram', TextType::class, [
-                'label'    => 'Instagram URL',
-                'required' => false,
-          ])->add('email', EmailType::class, [
-              'required' => true,
-          ])->add('phone', TextType::class, [
-              'required' => true,
-          ])->add('phoneLink', TextType::class, [
-              'required' => true,
-              'attr'     => ['info_text' => 'Please use no spaces and correct prefix e.g. +44'],
-          ])->add('days', CollectionType::class, [
+        ])->add('addressRegion', TextType::class, [
+            'required' => true,
+        ])->add('postcode', TextType::class, [
+            'required' => true,
+        ])->add('addressCountry', TextType::class, [
+            'required' => true,
+        ])->add('lat', TextType::class, [
+            'required' => true,
+        ])->add('lng', TextType::class, [
+            'required' => true,
+        ])->add('facebook', TextType::class, [
+            'label'    => 'Facebook URL',
+            'required' => false,
+        ])->add('twitter', TextType::class, [
+            'label'    => 'Twitter URL',
+            'required' => false,
+        ])->add('instagram', TextType::class, [
+            'label'    => 'Instagram URL',
+            'required' => false,
+        ])->add('youtube', TextType::class, [
+            'label'    => 'Youtube URL',
+            'required' => false,
+        ])->add('vimeo', TextType::class, [
+            'label'    => 'Vimeo URL',
+            'required' => false,
+        ])->add('email', EmailType::class, [
+            'required' => true,
+        ])->add('phone', TextType::class, [
+            'required' => true,
+        ])->add('phoneLink', TextType::class, [
+            'required' => true,
+            'attr'     => ['info_text' => 'Please use no spaces and correct prefix e.g. +44'],
+        ])->add('days', CollectionType::class, [
             'label'        => 'Opening Hours',
             'required'     => false,
             'entry_type'   => DayAdminType::class,
