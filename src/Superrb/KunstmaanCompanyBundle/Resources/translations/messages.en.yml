@@ -1,0 +1,6 @@
+# Forms
+kuma_company:
+  forms:
+    company:
+      messages:
+        add_success: Company has been edited

@@ -36,7 +36,7 @@ class CompanyAdminListController extends Controller
             if ($form->isValid()) {
                 $this->getDoctrine()->getManager()->persist($company);
                 $this->getDoctrine()->getManager()->flush();
-                $this->addFlash('success', $this->get('translator')->trans('kuma_social.forms.social.messages.add_success'));
+                $this->addFlash('success', $this->get('translator')->trans('kuma_company.forms.company.messages.add_success'));
 
                 return $this->redirect($this->generateUrl('superrbkunstmaancompanybundle_admin_company'));
             }
