@@ -433,6 +433,54 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     }
 
     /**
+     * Set youtube.
+     *
+     * @param string|null $youtube
+     *
+     * @return Company
+     */
+    public function setYoutube($youtube = null)
+    {
+        $this->youtube = $youtube;
+
+        return $this;
+    }
+
+    /**
+     * Get youtube.
+     *
+     * @return string|null
+     */
+    public function getYoutube()
+    {
+        return $this->youtube;
+    }
+
+    /**
+     * Set vimeo.
+     *
+     * @param string|null $vimeo
+     *
+     * @return Company
+     */
+    public function setVimeo($vimeo = null)
+    {
+        $this->vimeo = $vimeo;
+
+        return $this;
+    }
+
+    /**
+     * Get vimeo.
+     *
+     * @return string|null
+     */
+    public function getVimeo()
+    {
+        return $this->vimeo;
+    }
+
+    /**
      * Set phone.
      *
      * @param string|null $phone
