@@ -123,6 +123,20 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     /**
      * @var string|null
      *
+     * @ORM\Column(name="pinterest", type="string", length=255, nullable=true)
+     */
+    private $pinterest;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="linkedin", type="string", length=255, nullable=true)
+     */
+    private $linkedin;
+
+    /**
+     * @var string|null
+     *
      * @ORM\Column(name="phone", type="string", length=255, nullable=true)
      * @Assert\NotBlank()
      */
@@ -509,6 +523,54 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     public function getVimeo()
     {
         return $this->vimeo;
+    }
+
+    /**
+     * Set pinterest.
+     *
+     * @param string|null $pinterest
+     *
+     * @return Company
+     */
+    public function setPinterest($pinterest = null)
+    {
+        $this->pinterest = $pinterest;
+
+        return $this;
+    }
+
+    /**
+     * Get pinterest.
+     *
+     * @return string|null
+     */
+    public function getPinterest()
+    {
+        return $this->pinterest;
+    }
+
+    /**
+     * Set linkedin.
+     *
+     * @param string|null $linkedin
+     *
+     * @return Company
+     */
+    public function setLinkedin($linkedin = null)
+    {
+        $this->linkedin = $linkedin;
+
+        return $this;
+    }
+
+    /**
+     * Get linkedin.
+     *
+     * @return string|null
+     */
+    public function getLinkedin()
+    {
+        return $this->linkedin;
     }
 
     /**

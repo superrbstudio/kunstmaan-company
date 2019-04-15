@@ -61,6 +61,12 @@ class CompanyAdminType extends AbstractType
         ])->add('vimeo', TextType::class, [
             'label'    => 'Vimeo URL',
             'required' => false,
+        ])->add('pinterest', TextType::class, [
+            'label'    => 'Pinterest URL',
+            'required' => false,
+        ])->add('linkedin', TextType::class, [
+            'label'    => 'Linked In URL',
+            'required' => false,
         ])->add('email', EmailType::class, [
             'required' => true,
         ])->add('phone', TextType::class, [
