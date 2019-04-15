@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -29,8 +30,10 @@ class CompanyAdminType extends AbstractType
         parent::buildForm($builder, $options);
         $builder->add('companyName', TextType::class, [
             'required' => true,
+        ])->add('description', TextareaType::class, [
+            'required' => true,
         ])->add('streetAddress', TextType::class, [
-        'required' => true,
+            'required' => true,
         ])->add('addressLocality', TextType::class, [
             'required' => true,
         ])->add('addressRegion', TextType::class, [

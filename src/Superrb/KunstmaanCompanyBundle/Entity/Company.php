@@ -27,6 +27,13 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     /**
      * @var string|null
      *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var string|null
+     *
      * @ORM\Column(name="street_address", type="string", length=255, nullable=true)
      * @Assert\NotBlank()
      */
@@ -190,6 +197,30 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
         if ($this->offsetExists($offset)) {
             return $this->{$this->setterForOffset($offset)}(null);
         }
+    }
+
+    /**
+     * Set description.
+     *
+     * @param string|null $description
+     *
+     * @return Company
+     */
+    public function setDescription($description = null)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description.
+     *
+     * @return string|null
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 
     /**
