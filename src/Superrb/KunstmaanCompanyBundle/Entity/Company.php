@@ -28,6 +28,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      * @var string|null
      *
      * @ORM\Column(name="description", type="text", nullable=true)
+     * @Assert\NotBlank()
      */
     private $description;
 
