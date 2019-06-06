@@ -28,7 +28,6 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      * @var string|null
      *
      * @ORM\Column(name="description", type="text", nullable=true)
-     * @Assert\NotBlank()
      */
     private $description;
 
@@ -36,7 +35,6 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      * @var string|null
      *
      * @ORM\Column(name="street_address", type="string", length=255, nullable=true)
-     * @Assert\NotBlank()
      */
     private $streetAddress;
 
@@ -44,7 +42,6 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      * @var string|null
      *
      * @ORM\Column(name="address_locality", type="string", length=255, nullable=true)
-     * @Assert\NotBlank()
      */
     private $addressLocality;
 
@@ -52,7 +49,6 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      * @var string|null
      *
      * @ORM\Column(name="address_region", type="string", length=255, nullable=true)
-     * @Assert\NotBlank()
      */
     private $addressRegion;
 
@@ -60,7 +56,6 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      * @var string|null
      *
      * @ORM\Column(name="postcode", type="string", length=255, nullable=true)
-     * @Assert\NotBlank()
      */
     private $postcode;
 
@@ -68,7 +63,6 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      * @var string|null
      *
      * @ORM\Column(name="address_country", type="string", length=255, nullable=true)
-     * @Assert\NotBlank()
      */
     private $addressCountry;
 
@@ -139,7 +133,6 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      * @var string|null
      *
      * @ORM\Column(name="phone", type="string", length=255, nullable=true)
-     * @Assert\NotBlank()
      */
     private $phone;
 
@@ -147,14 +140,12 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      * @var string|null
      *
      * @ORM\Column(name="phone_link", type="string", length=255, nullable=true)
-     * @Assert\NotBlank()
      */
     private $phoneLink;
     /**
      * @var string|null
      *
      * @ORM\Column(name="email", type="string", length=255, nullable=true)
-     * @Assert\NotBlank()
      */
     private $email;
 
@@ -164,7 +155,6 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      * @ORM\OneToMany(targetEntity="\Superrb\KunstmaanCompanyBundle\Entity\Day", mappedBy="company",
      *      cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"displayOrder" = "ASC"})
-     * @Assert\NotBlank()
      */
     private $days;
 
