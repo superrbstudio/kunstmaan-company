@@ -7,8 +7,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -31,21 +31,21 @@ class CompanyAdminType extends AbstractType
         $builder->add('companyName', TextType::class, [
             'required' => true,
         ])->add('description', TextareaType::class, [
-            'required' => true,
+            'required' => false,
         ])->add('streetAddress', TextType::class, [
-            'required' => true,
+            'required' => false,
         ])->add('addressLocality', TextType::class, [
-            'required' => true,
+            'required' => false,
         ])->add('addressRegion', TextType::class, [
-            'required' => true,
+            'required' => false,
         ])->add('postcode', TextType::class, [
-            'required' => true,
+            'required' => false,
         ])->add('addressCountry', TextType::class, [
-            'required' => true,
+            'required' => false,
         ])->add('lat', TextType::class, [
-            'required' => true,
+            'required' => false,
         ])->add('lng', TextType::class, [
-            'required' => true,
+            'required' => false,
         ])->add('facebook', TextType::class, [
             'label'    => 'Facebook URL',
             'required' => false,
@@ -68,11 +68,11 @@ class CompanyAdminType extends AbstractType
             'label'    => 'Linked In URL',
             'required' => false,
         ])->add('email', EmailType::class, [
-            'required' => true,
+            'required' => false,
         ])->add('phone', TextType::class, [
-            'required' => true,
+            'required' => false,
         ])->add('phoneLink', TextType::class, [
-            'required' => true,
+            'required' => false,
             'attr'     => ['info_text' => 'Please use no spaces and correct prefix e.g. +44'],
         ])->add('days', CollectionType::class, [
             'label'        => 'Opening Hours',
