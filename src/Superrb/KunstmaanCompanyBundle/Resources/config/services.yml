@@ -5,6 +5,6 @@ services:
             -  { name: 'kunstmaan_admin.menu.adaptor' }
     SuperrbKunstmaanCompanyBundle.company.twig_extension:
         class: Superrb\KunstmaanCompanyBundle\Extension\CompanyTwigExtension
-        arguments: ["@doctrine.orm.entity_manager", "@kernel"]
+        arguments: ["@doctrine.orm.entity_manager", "@templating.engine.twig"]
         tags:
             - { name: twig.extension }

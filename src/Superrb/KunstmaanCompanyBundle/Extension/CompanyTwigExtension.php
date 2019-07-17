@@ -3,25 +3,127 @@
 namespace Superrb\KunstmaanCompanyBundle\Extension;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Superrb\KunstmaanCompanyBundle\Entity\Company;
+use Symfony\Component\Templating\EngineInterface;
+use Symfony\Component\Templating\PhpEngine;
+use Twig\TwigFunction;
 
+/**
+ * Class CompanyTwigExtension
+ * @package Superrb\KunstmaanCompanyBundle\Extension
+ */
 class CompanyTwigExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInterface
 {
-    protected $em;
+    /**
+     * @var Company|null
+     */
+    protected $company;
 
-    public function __construct(EntityManager $em)
+    /**
+     * @var EntityManagerInterface
+     */
+    protected $entityManager;
+
+    /**
+     * @var EngineInterface
+     */
+    protected $templating;
+
+    /**
+     * CompanyTwigExtension constructor.
+     * @param EntityManagerInterface $em
+     */
+    public function __construct(EntityManagerInterface $em, EngineInterface $twigEngine)
     {
-        $this->company         = $em->getRepository('SuperrbKunstmaanCompanyBundle:Company')->findOneBy(['id' => 1]);
+        $this->setEntityManager($em);
+        $this->setTemplating($twigEngine);
+        $this->setCompany($this->getEntityManager()->getRepository('SuperrbKunstmaanCompanyBundle:Company')->findOneBy(['id' => 1]));
     }
 
+    /**
+     * @return array
+     */
     public function getGlobals()
     {
         return [
-          'company'       => $this->company,
-      ];
+            'company'       => $this->company,
+        ];
     }
 
+    public function getFunctions()
+    {
+        return [
+            new TwigFunction('generate_company_schema', [$this, 'generateCompanySchema']),
+        ];
+    }
+
+    /**
+     * @return string
+     */
     public function getName()
     {
         return 'SuperrbKunstmaanCompanyBundle:TwigExtension';
+    }
+
+    public function generateCompanySchema()
+    {
+        return $this->getTemplating()->render('@SuperrbKunstmaanCompany/Twig/companySchema.html.twig', [
+            'company' => $this->getCompany(),
+        ]);
+    }
+
+    /**
+     * @return Company|null
+     */
+    public function getCompany(): ?Company
+    {
+        return $this->company;
+    }
+
+    /**
+     * @param Company|null $company
+     * @return CompanyTwigExtension
+     */
+    public function setCompany(?Company $company): CompanyTwigExtension
+    {
+        $this->company = $company;
+        return $this;
+    }
+
+    /**
+     * @return EntityManagerInterface
+     */
+    public function getEntityManager(): EntityManagerInterface
+    {
+        return $this->entityManager;
+    }
+
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @return CompanyTwigExtension
+     */
+    public function setEntityManager(EntityManagerInterface $entityManager): CompanyTwigExtension
+    {
+        $this->entityManager = $entityManager;
+        return $this;
+    }
+
+    /**
+     * @return EngineInterface
+     */
+    public function getTemplating(): EngineInterface
+    {
+        return $this->templating;
+    }
+
+    /**
+     * @param EngineInterface $templating
+     * @return CompanyTwigExtension
+     */
+    public function setTemplating(EngineInterface $templating): CompanyTwigExtension
+    {
+        $this->templating = $templating;
+        return $this;
     }
 }

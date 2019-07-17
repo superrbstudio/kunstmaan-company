@@ -2,10 +2,13 @@
 
 namespace Superrb\KunstmaanCompanyBundle\Entity;
 
+use App\Entity\Service;
 use ArrayAccess;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Kunstmaan\AdminBundle\Entity\AbstractEntity;
 use Kunstmaan\AdminBundle\Entity\DeepCloneInterface;
+use Kunstmaan\MediaBundle\Entity\Media;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -132,22 +135,38 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     /**
      * @var string|null
      *
-     * @ORM\Column(name="phone", type="string", length=255, nullable=true)
+     * @ORM\Column(name="phone", type="phone_number", nullable=true)
      */
     private $phone;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="phone_link", type="string", length=255, nullable=true)
-     */
-    private $phoneLink;
-    /**
-     * @var string|null
-     *
      * @ORM\Column(name="email", type="string", length=255, nullable=true)
      */
     private $email;
+
+    /**
+     * @var \Kunstmaan\MediaBundle\Entity\Media
+     *
+     * @ORM\ManyToOne(targetEntity="Kunstmaan\MediaBundle\Entity\Media")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="logo_id", referencedColumnName="id")
+     * })
+     * @Assert\NotBlank()
+     */
+    private $logo;
+
+    /**
+     * @var \Kunstmaan\MediaBundle\Entity\Media
+     *
+     * @ORM\ManyToOne(targetEntity="Kunstmaan\MediaBundle\Entity\Media")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="image_id", referencedColumnName="id")
+     * })
+     * @Assert\NotBlank()
+     */
+    private $image;
 
     /**
      * @var ArrayCollection
@@ -158,6 +177,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      */
     private $days;
 
+    /**
+     *
+     */
     public function deepClone()
     {
         $days       = $this->getDays();
@@ -168,16 +190,28 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
         }
     }
 
+    /**
+     * @param $offset
+     * @return string
+     */
     private function getterForOffset($offset)
     {
         return 'get'.ucwords($offset);
     }
 
+    /**
+     * @param $offset
+     * @return string
+     */
     private function setterForOffset($offset)
     {
         return 'set'.ucwords($offset);
     }
 
+    /**
+     * @param mixed $offset
+     * @return mixed
+     */
     public function offsetGet($offset)
     {
         if ($this->offsetExists($offset)) {
@@ -185,6 +219,10 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
         }
     }
 
+    /**
+     * @param mixed $offset
+     * @param mixed $value
+     */
     public function offsetSet($offset, $value)
     {
         if ($this->offsetExists($offset)) {
@@ -192,11 +230,18 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
         }
     }
 
+    /**
+     * @param mixed $offset
+     * @return bool
+     */
     public function offsetExists($offset)
     {
         return method_exists($this, $this->getterForOffset($offset));
     }
 
+    /**
+     * @param mixed $offset
+     */
     public function offsetUnset($offset)
     {
         if ($this->offsetExists($offset)) {
@@ -661,11 +706,58 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     }
 
     /**
+     * Set logo.
+     *
+     * @param Media|null $logo
+     *
+     * @return Company
+     */
+    public function setLogo(Media $logo = null)
+    {
+        $this->logo = $logo;
+        return $this;
+    }
+
+    /**
+     * Get logo.
+     *
+     * @return Media|null
+     */
+    public function getLogo()
+    {
+        return $this->logo;
+    }
+
+    /**
+     * Set image.
+     *
+     * @param Media|null $image
+     *
+     * @return Service
+     */
+    public function setImage(Media $image = null)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image.
+     *
+     * @return Media|null
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
      * Constructor.
      */
     public function __construct()
     {
-        $this->days = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->days = new ArrayCollection();
     }
 
     /**

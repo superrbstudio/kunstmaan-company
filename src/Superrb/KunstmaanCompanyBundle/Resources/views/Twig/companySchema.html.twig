@@ -1,0 +1,37 @@
+{% set openingHours = [] %}
+{% if company.days is defined and company.days is not empty %}
+        {% for day in company.days %}
+                {% set openingHours = openingHours|merge(['{
+"@type": "OpeningHoursSpecification",
+"dayOfWeek": "' ~ day.day ~ '",
+"opens": "' ~ day.openTime ~ '",
+"closes":"' ~ day.closeTime ~ '"
+}']) %}
+        {% endfor %}
+{% endif %}
+<script type="application/ld+json">
+    {
+    "@context": "http://schema.org",
+    "@type": "LocalBusiness",
+    "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "{{ company.streetAddress }}",
+                "addressLocality": "{{ company.addressLocality }}",
+                "addressRegion" : "{{ company.addressRegion }}",
+                "postalCode":"{{ company.postcode }}",
+                "addressCountry": "{{ company.addressCountry }}"
+        },
+        "url":"{{ url("_slug") }}",
+        {% if company.logo is not empty %}"logo": "{{ app.request.getSchemeAndHttpHost() ~ company.logo.url }}",{% endif %}
+        {% if company.image is not empty %}"image": "{{ app.request.getSchemeAndHttpHost() ~ company.image.url }}",{% endif %}
+         "telephone": "{{ company.phone }}",
+        "email" : "{{ company.email }}",
+        "name": "{{company.companyName}}",
+        "sameAs" : [
+            "{{ company.facebook }}",
+            "{{ company.twitter }}",
+            "{{ company.instagram }}"
+        ],
+        "openingHoursSpecification" :  [{{openingHours|join(',')|raw }}]
+    }
+</script>

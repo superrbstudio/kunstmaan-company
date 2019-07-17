@@ -2,15 +2,20 @@
 
 namespace Superrb\KunstmaanCompanyBundle\Form\Type;
 
+use Kunstmaan\MediaBundle\Form\Type\MediaType;
+use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
+use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber;
 use Superrb\KunstmaanCompanyBundle\Entity\Company;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Kunstmaan\MediaBundle\Validator\Constraints as Assert;
 
 class CompanyAdminType extends AbstractType
 {
@@ -40,8 +45,9 @@ class CompanyAdminType extends AbstractType
             'required' => false,
         ])->add('postcode', TextType::class, [
             'required' => false,
-        ])->add('addressCountry', TextType::class, [
+        ])->add('addressCountry', CountryType::class, [
             'required' => false,
+            'preferred_choices' => ['GB'],
         ])->add('lat', TextType::class, [
             'required' => false,
         ])->add('lng', TextType::class, [
@@ -69,11 +75,24 @@ class CompanyAdminType extends AbstractType
             'required' => false,
         ])->add('email', EmailType::class, [
             'required' => false,
-        ])->add('phone', TextType::class, [
+        ])->add('phone', PhoneNumberType::class, [
             'required' => false,
-        ])->add('phoneLink', TextType::class, [
-            'required' => false,
-            'attr'     => ['info_text' => 'Please use no spaces and correct prefix e.g. +44'],
+            'attr'     => ['info_text' => 'Please enter the full international format (e.g. +44 20 1111 1111)'],
+            'constraints' => [
+                new PhoneNumber(),
+            ],
+        ])->add('logo', MediaType::class, [
+            'required'    => false,
+            'mediatype'   => 'image',
+            'constraints' => [new Assert\Media([
+                'mimeTypes' => ['image/png', 'image/jpg', 'image/jpeg', 'image/svg+xml'],
+            ])],
+        ])->add('image', MediaType::class, [
+            'required'    => false,
+            'mediatype'   => 'image',
+            'constraints' => [new Assert\Media([
+                'mimeTypes' => ['image/png', 'image/jpg', 'image/jpeg', 'image/svg+xml'],
+            ])],
         ])->add('days', CollectionType::class, [
             'label'        => 'Opening Hours',
             'required'     => false,
