@@ -8,35 +8,9 @@
 composer require superrb/kunstmaan-company
 ```
 
-### Step 2: Enable the Bundle
+### Step 2: Add the admin routes
 
-Enable the bundle in your `app/AppKernel.php` for your project
-
-```php
-<?php
-// app/AppKernel.php
-
-// ...
-class AppKernel extends Kernel
-{
-    public function registerBundles()
-    {
-        $bundles = array(
-            // ...
-
-            new Superrb\KunstmaanCompanyBundle\SuperrbKunstmaanCompanyBundle(),
-        );
-
-        // ...
-    }
-
-    // ...
-}
-```
-
-### Step 3: Add the routes
-
-Add the following to your `app/config/routing.yml`
+Add the following to your `/config/routes.yaml`
 
 ```yml
 superrbkunstmaancompanybundle_company_admin_list:
@@ -45,7 +19,7 @@ superrbkunstmaancompanybundle_company_admin_list:
     prefix:   /admin/company
 ```
 
-### Step 4: Generate Database Tables
+### Step 3: Generate Database Tables
 
 You can use Doctrine Migrations or a schema update, it is your choice
 
@@ -60,50 +34,17 @@ bin/console doctrine:schema:update --force
 
 ## Usage
 
-### Example schema
+### Output Schema on a page of your choice
 
 ```html
-  {% if company is defined and company is not empty %}
-    {% set openingHours = [] %}
-    {% if company.days is defined and company.days is not empty %} 
-      {% for day in company.days %}
-        {% set openingHours = openingHours|merge(['{
-          "@type": "OpeningHoursSpecification",
-          "dayOfWeek": "' ~ day.day ~ '",
-          "opens": "' ~ day.openTime ~ '",
-          "closes":"' ~ day.closeTime ~ '"
-        }']) %}
-      {% endfor %}
-    {% endif %}
+  {{ generate_company_schema() }}
+```
 
-    {% spaceless %}
-      <script type="application/ld+json">
-        { 
-          "@context": "http://schema.org",
-          "@type": "LocalBusiness",
-          "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "{{ company.streetAddress }}",
-            "addressLocality": "{{ company.addressLocality }}",
-            "addressRegion" : "{{ company.addressRegion }}",
-            "postalCode":"{{ company.postcode }}",
-            "addressCountry": "{{ company.addressCountry }}"
-          },
-          "url":"{{ url("_slug") }}",
-          "telephone": "{{ company.phone }}",
-          "email" : "{{ company.email }}",
-          "name": "{{company.companyName}}",
-          "sameAs" : [ 
-            "{{ company.facebook }}",
-            "{{ company.twitter }}",
-            "{{ company.instagram }}"
-          ],
-          "openingHoursSpecification" :  [{{openingHours|join(',')|raw }}]
-        }
-      </script>
-    {% endspaceless %}
+### Access the `company` Twig global
 
-  {% endif %}
+You can access the `company` Twig global from any template, for example if you wanted to output the phone number:
+```html
+<a href="tel:{{ company.phone | phone_number_format('INTERNATIONAL') }}">{{ company.phone | phone_number_format('NATIONAL') }}</a>
 ```
 
 ## Issues and Troubleshooting

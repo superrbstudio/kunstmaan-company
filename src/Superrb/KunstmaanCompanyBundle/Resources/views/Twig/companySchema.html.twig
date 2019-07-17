@@ -24,7 +24,7 @@
         "url":"{{ url("_slug") }}",
         {% if company.logo is not empty %}"logo": "{{ app.request.getSchemeAndHttpHost() ~ company.logo.url }}",{% endif %}
         {% if company.image is not empty %}"image": "{{ app.request.getSchemeAndHttpHost() ~ company.image.url }}",{% endif %}
-         "telephone": "{{ company.phone }}",
+         "telephone": "{{ company.phone | phone_number_format('INTERNATIONAL')  }}",
         "email" : "{{ company.email }}",
         "name": "{{company.companyName}}",
         "sameAs" : [
