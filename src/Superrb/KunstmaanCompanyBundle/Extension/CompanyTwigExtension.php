@@ -6,12 +6,10 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Superrb\KunstmaanCompanyBundle\Entity\Company;
 use Symfony\Component\Templating\EngineInterface;
-use Symfony\Component\Templating\PhpEngine;
 use Twig\TwigFunction;
 
 /**
- * Class CompanyTwigExtension
- * @package Superrb\KunstmaanCompanyBundle\Extension
+ * Class CompanyTwigExtension.
  */
 class CompanyTwigExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInterface
 {
@@ -32,7 +30,9 @@ class CompanyTwigExtension extends \Twig_Extension implements \Twig_Extension_Gl
 
     /**
      * CompanyTwigExtension constructor.
+     *
      * @param EntityManagerInterface $em
+     * @param EngineInterface        $twigEngine
      */
     public function __construct(EntityManagerInterface $em, EngineInterface $twigEngine)
     {
@@ -83,11 +83,13 @@ class CompanyTwigExtension extends \Twig_Extension implements \Twig_Extension_Gl
 
     /**
      * @param Company|null $company
+     *
      * @return CompanyTwigExtension
      */
     public function setCompany(?Company $company): CompanyTwigExtension
     {
         $this->company = $company;
+
         return $this;
     }
 
@@ -101,11 +103,13 @@ class CompanyTwigExtension extends \Twig_Extension implements \Twig_Extension_Gl
 
     /**
      * @param EntityManagerInterface $entityManager
+     *
      * @return CompanyTwigExtension
      */
     public function setEntityManager(EntityManagerInterface $entityManager): CompanyTwigExtension
     {
         $this->entityManager = $entityManager;
+
         return $this;
     }
 
@@ -119,11 +123,13 @@ class CompanyTwigExtension extends \Twig_Extension implements \Twig_Extension_Gl
 
     /**
      * @param EngineInterface $templating
+     *
      * @return CompanyTwigExtension
      */
     public function setTemplating(EngineInterface $templating): CompanyTwigExtension
     {
         $this->templating = $templating;
+
         return $this;
     }
 }

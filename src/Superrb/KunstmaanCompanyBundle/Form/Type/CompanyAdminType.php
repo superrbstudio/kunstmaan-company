@@ -3,6 +3,7 @@
 namespace Superrb\KunstmaanCompanyBundle\Form\Type;
 
 use Kunstmaan\MediaBundle\Form\Type\MediaType;
+use Kunstmaan\MediaBundle\Validator\Constraints as Assert;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber;
 use Superrb\KunstmaanCompanyBundle\Entity\Company;
@@ -15,7 +16,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Kunstmaan\MediaBundle\Validator\Constraints as Assert;
 
 class CompanyAdminType extends AbstractType
 {
@@ -46,7 +46,7 @@ class CompanyAdminType extends AbstractType
         ])->add('postcode', TextType::class, [
             'required' => false,
         ])->add('addressCountry', CountryType::class, [
-            'required' => false,
+            'required'          => false,
             'preferred_choices' => ['GB'],
         ])->add('lat', TextType::class, [
             'required' => false,
@@ -76,8 +76,8 @@ class CompanyAdminType extends AbstractType
         ])->add('email', EmailType::class, [
             'required' => false,
         ])->add('phone', PhoneNumberType::class, [
-            'required' => false,
-            'attr'     => ['info_text' => 'Please enter the full international format (e.g. +44 20 1111 1111)'],
+            'required'    => false,
+            'attr'        => ['info_text' => 'Please enter the full international format (e.g. +44 20 1111 1111)'],
             'constraints' => [
                 new PhoneNumber(),
             ],

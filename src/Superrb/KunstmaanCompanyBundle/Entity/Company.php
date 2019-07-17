@@ -177,9 +177,6 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      */
     private $days;
 
-    /**
-     *
-     */
     public function deepClone()
     {
         $days       = $this->getDays();
@@ -192,6 +189,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
 
     /**
      * @param $offset
+     *
      * @return string
      */
     private function getterForOffset($offset)
@@ -201,6 +199,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
 
     /**
      * @param $offset
+     *
      * @return string
      */
     private function setterForOffset($offset)
@@ -210,6 +209,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
 
     /**
      * @param mixed $offset
+     *
      * @return mixed
      */
     public function offsetGet($offset)
@@ -232,6 +232,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
 
     /**
      * @param mixed $offset
+     *
      * @return bool
      */
     public function offsetExists($offset)
@@ -715,6 +716,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     public function setLogo(Media $logo = null)
     {
         $this->logo = $logo;
+
         return $this;
     }
 
