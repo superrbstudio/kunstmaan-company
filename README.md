@@ -37,14 +37,16 @@ bin/console doctrine:schema:update --force
 ### Output Schema on a page of your choice
 
 ```html
-  {{ generate_company_schema() }}
+  {{ generate_company_schema() | raw }}
 ```
 
 ### Access the `company` Twig global
 
 You can access the `company` Twig global from any template, for example if you wanted to output the phone number:
 ```html
+{% if company.phone is not empty %}
 <a href="tel:{{ company.phone | phone_number_format('INTERNATIONAL') }}">{{ company.phone | phone_number_format('NATIONAL') }}</a>
+{% endif %}
 ```
 
 ## Issues and Troubleshooting
