@@ -14,24 +14,26 @@
     "@context": "http://schema.org",
     "@type": "LocalBusiness",
     "address": {
-                "@type": "PostalAddress",
-                "streetAddress": "{{ company.streetAddress }}",
-                "addressLocality": "{{ company.addressLocality }}",
-                "addressRegion" : "{{ company.addressRegion }}",
-                "postalCode":"{{ company.postcode }}",
-                "addressCountry": "{{ company.addressCountry }}"
+            "@type": "PostalAddress",
+            {% if company.streetAddress is not empty %}"streetAddress": "{{ company.streetAddress }}",{% endif %}
+            {% if company.addressLocality is not empty %}"addressLocality": "{{ company.addressLocality }}",{% endif %}
+            {% if company.addressRegion is not empty %}"addressRegion" : "{{ company.addressRegion }}",{% endif %}
+            {% if company.postcode is not empty %}"postalCode":"{{ company.postcode }}",{% endif %}
+            "addressCountry": "{{ company.addressCountry }}"
         },
-        "url":"{{ url("_slug") }}",
+        "url":"{{ app.request.schemeAndHttpHost }}",
         {% if company.logo is not empty %}"logo": "{{ app.request.getSchemeAndHttpHost() ~ company.logo.url }}",{% endif %}
         {% if company.image is not empty %}"image": "{{ app.request.getSchemeAndHttpHost() ~ company.image.url }}",{% endif %}
-         "telephone": "{{ company.phone | phone_number_format('INTERNATIONAL')  }}",
-        "email" : "{{ company.email }}",
+        {% if company.phone is not empty %}"telephone": "{{ company.phone | phone_number_format('INTERNATIONAL')  }}",{% endif %}
+        {% if company.email is not empty %}"email" : "{{ company.email }}",{% endif %}
         "name": "{{company.companyName}}",
+        {% if company.facebook is not empty or company.twitter is not empty or company.instagram is not empty %}
         "sameAs" : [
             "{{ company.facebook }}",
             "{{ company.twitter }}",
             "{{ company.instagram }}"
         ],
+        {% endif %}
         "openingHoursSpecification" :  [{{openingHours|join(',')|raw }}]
     }
 </script>
