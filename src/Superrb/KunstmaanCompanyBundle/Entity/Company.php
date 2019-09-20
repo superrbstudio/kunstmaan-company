@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Kunstmaan\AdminBundle\Entity\AbstractEntity;
 use Kunstmaan\AdminBundle\Entity\DeepCloneInterface;
 use Kunstmaan\MediaBundle\Entity\Media;
+use Symfony\Component\Intl\Countries;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -138,6 +139,13 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      * @ORM\Column(name="linkedin", type="string", length=255, nullable=true)
      */
     private $linkedin;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="dribbble", type="string", length=255, nullable=true)
+     */
+    private $dribbble;
 
     /**
      * @var string|null
@@ -402,6 +410,35 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     }
 
     /**
+     * @return string
+     */
+    public function getAddress(): string {
+        $parts = [];
+
+        if($this->getStreetAddress() != '') {
+            $parts[] = $this->getStreetAddress();
+        }
+
+        if($this->getAddressLocality() != '') {
+            $parts[] = $this->getAddressLocality();
+        }
+
+        if($this->getAddressRegion() != '') {
+            $parts[] = $this->getAddressRegion();
+        }
+
+        if($this->getPostcode() != '') {
+            $parts[] = $this->getPostcode();
+        }
+
+        if($this->getAddressCountry() != '') {
+            $parts[] = Countries::getName($this->getAddressCountry());
+        }
+
+        return implode(" \n", $parts);
+     }
+
+    /**
      * @return string|null
      */
     public function getAddressUrl(): ?string
@@ -415,7 +452,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     public function setAddressUrl(?string $addressUrl): Company
     {
         $this->addressUrl = $addressUrl;
-        
+
         return $this;
     }
 
@@ -633,6 +670,95 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     public function getLinkedin()
     {
         return $this->linkedin;
+    }
+
+    /**
+     * Set dribbble.
+     *
+     * @param string|null $dribbble
+     *
+     * @return Company
+     */
+    public function setDribbble($dribbble = null)
+    {
+        $this->dribbble = $dribbble;
+
+        return $this;
+    }
+
+    /**
+     * Get dribbble.
+     *
+     * @return string|null
+     */
+    public function getDribbble()
+    {
+        return $this->dribbble;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSocialMedias(): array {
+        $networks = array();
+
+        if($this->getFacebook() != '') {
+            $networks[] = [
+                'url' => $this->getFacebook(),
+                'key' => 'facebook',
+            ];
+        }
+
+        if($this->getTwitter() != '') {
+            $networks[] = [
+                'url' => $this->getTwitter(),
+                'key' => 'twitter',
+            ];
+        }
+
+        if($this->getInstagram() != '') {
+            $networks[] = [
+                'url' => $this->getInstagram(),
+                'key' => 'instagram',
+            ];
+        }
+
+        if($this->getYoutube() != '') {
+            $networks[] = [
+                'url' => $this->getYoutube(),
+                'key' => 'youtube',
+            ];
+        }
+
+        if($this->getVimeo() != '') {
+            $networks[] = [
+                'url' => $this->getVimeo(),
+                'key' => 'vimeo',
+            ];
+        }
+
+        if($this->getPinterest() != '') {
+            $networks[] = [
+                'url' => $this->getPinterest(),
+                'key' => 'pinterest',
+            ];
+        }
+
+        if($this->getLinkedin() != '') {
+            $networks[] = [
+                'url' => $this->getLinkedin(),
+                'key' => 'linkedin',
+            ];
+        }
+
+        if($this->getDribbble() != '') {
+            $networks[] = [
+                'url' => $this->getDribbble(),
+                'key' => 'dribbble',
+            ];
+        }
+
+        return $networks;
     }
 
     /**

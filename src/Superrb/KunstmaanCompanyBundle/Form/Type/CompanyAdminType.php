@@ -66,24 +66,51 @@ class CompanyAdminType extends AbstractType
         ])->add('facebook', TextType::class, [
             'label'    => 'Facebook URL',
             'required' => false,
+            'constraints' => [
+                new Url(),
+            ],
         ])->add('twitter', TextType::class, [
             'label'    => 'Twitter URL',
             'required' => false,
+            'constraints' => [
+                new Url(),
+            ],
         ])->add('instagram', TextType::class, [
             'label'    => 'Instagram URL',
             'required' => false,
+            'constraints' => [
+                new Url(),
+            ],
         ])->add('youtube', TextType::class, [
             'label'    => 'Youtube URL',
             'required' => false,
+            'constraints' => [
+                new Url(),
+            ],
         ])->add('vimeo', TextType::class, [
             'label'    => 'Vimeo URL',
             'required' => false,
+            'constraints' => [
+                new Url(),
+            ],
         ])->add('pinterest', TextType::class, [
             'label'    => 'Pinterest URL',
             'required' => false,
+            'constraints' => [
+                new Url(),
+            ],
         ])->add('linkedin', TextType::class, [
             'label'    => 'Linked In URL',
             'required' => false,
+            'constraints' => [
+                new Url(),
+            ],
+        ])->add('dribbble', TextType::class, [
+            'label'    => 'Dribbble URL',
+            'required' => false,
+            'constraints' => [
+                new Url(),
+            ],
         ])->add('email', EmailType::class, [
             'required' => false,
             'constraints' => [
