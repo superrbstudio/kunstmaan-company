@@ -88,7 +88,11 @@ class CompanyTwigExtension extends \Twig_Extension implements \Twig_Extension_Gl
      */
     public function setCompany(?Company $company): CompanyTwigExtension
     {
-        $this->company = $company;
+        if(!($company instanceof Company)) {
+            $this->company = new Company();
+        } else {
+            $this->company = $company;
+        }
 
         return $this;
     }
