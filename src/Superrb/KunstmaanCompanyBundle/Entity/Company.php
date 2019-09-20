@@ -72,6 +72,13 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     /**
      * @var string|null
      *
+     * @ORM\Column(name="address_url", type="string", length=255, nullable=true)
+     */
+    private $addressUrl;
+
+    /**
+     * @var string|null
+     *
      * @ORM\Column(name="lat", type="string", length=255, nullable=true)
      */
     private $lat;
@@ -392,6 +399,24 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     public function getAddressCountry()
     {
         return $this->addressCountry;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAddressUrl(): ?string
+    {
+        return $this->addressUrl;
+    }
+
+    /**
+     * @param string|null $addressUrl
+     */
+    public function setAddressUrl(?string $addressUrl): Company
+    {
+        $this->addressUrl = $addressUrl;
+        
+        return $this;
     }
 
     /**
