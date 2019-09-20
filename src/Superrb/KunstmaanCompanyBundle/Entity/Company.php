@@ -410,9 +410,10 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     }
 
     /**
+     * @param string $delimeter
      * @return string
      */
-    public function getAddress(): string {
+    public function getAddress($delimeter = " \n"): string {
         $parts = [];
 
         if($this->getStreetAddress() != '') {
@@ -435,7 +436,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
             $parts[] = Countries::getName($this->getAddressCountry());
         }
 
-        return implode(" \n", $parts);
+        return implode($delimeter, $parts);
      }
 
     /**
