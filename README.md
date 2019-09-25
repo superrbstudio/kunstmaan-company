@@ -58,14 +58,18 @@ You can send a delimiter for the address parts, e.g. a comma or new line.
 ### Get Social Medias
 You can retrieve a list of the available social media links available for the company. The example shows how you can easily create a list of icons and links.
 ```twig
-{% for network in company.socialMedias %}
-    <a href="{{ network.url }}"
-       class="contact__link"
-       target="_blank"
-       rel="noopener">
-        {{ network.key | capitalize }}
-    </a>
-{% endfor %}
+<ul class="social">
+    {% for network in company.socialMedias %}
+        <li class="social-item">
+            <a href="{{ network.url }}"
+               class="social-link social-link--{{ network.key }}"
+               target="_blank"
+               rel="noopener">
+                <span class="screenreader-text">{{ network.key | capitalize }}</span>
+            </a>
+        </li>
+    {% endfor %}
+</ul>
 ```
 
 ## Issues and Troubleshooting
