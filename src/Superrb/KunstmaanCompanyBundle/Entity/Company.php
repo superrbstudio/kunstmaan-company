@@ -271,9 +271,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param string|null $description
      *
-     * @return Company
+     * @return self
      */
-    public function setDescription($description = null)
+    public function setDescription(?string $description = null): self
     {
         $this->description = $description;
 
@@ -285,7 +285,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -412,33 +412,35 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
 
     /**
      * @param string $delimeter
+     *
      * @return string
      */
-    public function getAddress($delimeter = " \n"): string {
+    public function getAddress($delimeter = " \n"): string
+    {
         $parts = [];
 
-        if($this->getStreetAddress() != '') {
+        if ('' != $this->getStreetAddress()) {
             $parts[] = $this->getStreetAddress();
         }
 
-        if($this->getAddressLocality() != '') {
+        if ('' != $this->getAddressLocality()) {
             $parts[] = $this->getAddressLocality();
         }
 
-        if($this->getAddressRegion() != '') {
+        if ('' != $this->getAddressRegion()) {
             $parts[] = $this->getAddressRegion();
         }
 
-        if($this->getPostcode() != '') {
+        if ('' != $this->getPostcode()) {
             $parts[] = $this->getPostcode();
         }
 
-        if($this->getAddressCountry() != '') {
+        if ('' != $this->getAddressCountry()) {
             $parts[] = Countries::getName($this->getAddressCountry());
         }
 
         return implode($delimeter, $parts);
-     }
+    }
 
     /**
      * @return string|null
@@ -867,7 +869,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return self
      */
-    public function setLogo(Media $logo = null): self
+    public function setLogo(?Media $logo = null): self
     {
         $this->logo = $logo;
 
@@ -891,7 +893,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return self
      */
-    public function setImage(Media $image = null): self
+    public function setImage(?Media $image = null): self
     {
         $this->image = $image;
 
