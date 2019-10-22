@@ -2,7 +2,6 @@
 
 namespace Superrb\KunstmaanCompanyBundle\Entity;
 
-use App\Entity\Service;
 use ArrayAccess;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Kunstmaan\AdminBundle\Entity\AbstractEntity;
 use Kunstmaan\AdminBundle\Entity\DeepCloneInterface;
 use Kunstmaan\MediaBundle\Entity\Media;
-use Symfony\Component\Intl\Countries;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -35,62 +33,6 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="street_address", type="string", length=255, nullable=true)
-     */
-    private $streetAddress;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="address_locality", type="string", length=255, nullable=true)
-     */
-    private $addressLocality;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="address_region", type="string", length=255, nullable=true)
-     */
-    private $addressRegion;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="postcode", type="string", length=255, nullable=true)
-     */
-    private $postcode;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="address_country", type="string", length=255, nullable=true)
-     */
-    private $addressCountry;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="address_url", type="string", length=255, nullable=true)
-     */
-    private $addressUrl;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="lat", type="string", length=255, nullable=true)
-     */
-    private $lat;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="lng", type="string", length=255, nullable=true)
-     */
-    private $lng;
 
     /**
      * @var string|null
@@ -187,6 +129,23 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     /**
      * @var Collection
      *
+     * @ORM\OneToMany(targetEntity="\Superrb\KunstmaanCompanyBundle\Entity\Address", mappedBy="company",
+     *      cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OrderBy({"displayOrder" = "ASC"})
+     */
+    private $addresses;
+
+    /**
+     * @var Address|null
+     *
+     * @ORM\OneToOne(targetEntity="\Superrb\KunstmaanCompanyBundle\Entity\Address")
+     * @ORM\JoinColumn(name="default_address_id", referencedColumnName="id")
+     */
+    private $defaultAddress;
+
+    /**
+     * @var Collection
+     *
      * @ORM\OneToMany(targetEntity="\Superrb\KunstmaanCompanyBundle\Entity\Day", mappedBy="company",
      *      cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"displayOrder" = "ASC"})
@@ -200,6 +159,13 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
         foreach ($days as $day) {
             $cloneDay = clone $day;
             $this->addDay($cloneDay);
+        }
+
+        $addresses       = $this->getAddresses();
+        $this->addresses = new ArrayCollection();
+        foreach ($addresses as $address) {
+            $cloneAddress = clone $address;
+            $this->addAddress($cloneAddress);
         }
     }
 
@@ -291,15 +257,77 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     }
 
     /**
-     * Set streetAddress.
-     *
-     * @param string|null $streetAddress
-     *
-     * @return Company
+     * @return Collection
      */
-    public function setStreetAddress($streetAddress = null)
+    public function getAddresses(): Collection
     {
-        $this->streetAddress = $streetAddress;
+        return $this->addresses;
+    }
+
+    /**
+     * @param Address $address
+     *
+     * @return self
+     */
+    public function addAddress(Address $address): self
+    {
+        $this->addresses->add($address);
+
+        return $this;
+    }
+
+    /**
+     * @param Address $address
+     *
+     * @return self
+     */
+    public function removeAddress(Address $address): self
+    {
+        $this->addresses->removeElement($address);
+
+        return $this;
+    }
+
+    /**
+     * @param Collection $addresses
+     *
+     * @return self
+     */
+    public function setAddresses(Collection $addresses): self
+    {
+        $this->addresses = $addresses;
+
+        return $this;
+    }
+
+    /**
+     * @return Address|null
+     */
+    public function getDefaultAddress(): ?Address
+    {
+        return $this->defaultAddress;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasDefaultAddress(): bool
+    {
+        return null !== $this->defaultAddress;
+    }
+
+    /**
+     * @param Address|null $address
+     *
+     * @return self
+     */
+    public function setDefaultAddress(?Address $address): self
+    {
+        if (!$this->addresses->contains($address)) {
+            $this->addAddress($address);
+        }
+
+        $this->defaultAddress = $address;
 
         return $this;
     }
@@ -309,23 +337,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getStreetAddress()
+    public function getStreetAddress(): ?string
     {
-        return $this->streetAddress;
-    }
-
-    /**
-     * Set addressLocality.
-     *
-     * @param string|null $addressLocality
-     *
-     * @return Company
-     */
-    public function setAddressLocality($addressLocality = null)
-    {
-        $this->addressLocality = $addressLocality;
-
-        return $this;
+        return $this->getFromDefaultAddress('streetAddress');
     }
 
     /**
@@ -333,23 +347,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getAddressLocality()
+    public function getAddressLocality(): ?string
     {
-        return $this->addressLocality;
-    }
-
-    /**
-     * Set addressRegion.
-     *
-     * @param string|null $addressRegion
-     *
-     * @return Company
-     */
-    public function setAddressRegion($addressRegion = null)
-    {
-        $this->addressRegion = $addressRegion;
-
-        return $this;
+        return $this->getFromDefaultAddress('locality');
     }
 
     /**
@@ -357,23 +357,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getAddressRegion()
+    public function getAddressRegion(): ?string
     {
-        return $this->addressRegion;
-    }
-
-    /**
-     * Set postcode.
-     *
-     * @param string|null $postcode
-     *
-     * @return Company
-     */
-    public function setPostcode($postcode = null)
-    {
-        $this->postcode = $postcode;
-
-        return $this;
+        return $this->getFromDefaultAddress('region');
     }
 
     /**
@@ -381,65 +367,17 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getPostcode()
+    public function getPostcode(): ?string
     {
-        return $this->postcode;
+        return $this->getFromDefaultAddress('postcode');
     }
 
     /**
-     * Set addressCountry.
-     *
-     * @param string|null $addressCountry
-     *
-     * @return Company
-     */
-    public function setAddressCountry($addressCountry = null)
-    {
-        $this->addressCountry = $addressCountry;
-
-        return $this;
-    }
-
-    /**
-     * Get addressCountry.
-     *
      * @return string|null
      */
-    public function getAddressCountry()
+    public function getAddressCountry(): ?string
     {
-        return $this->addressCountry;
-    }
-
-    /**
-     * @param string $delimeter
-     *
-     * @return string
-     */
-    public function getAddress($delimeter = " \n"): string
-    {
-        $parts = [];
-
-        if ('' != $this->getStreetAddress()) {
-            $parts[] = $this->getStreetAddress();
-        }
-
-        if ('' != $this->getAddressLocality()) {
-            $parts[] = $this->getAddressLocality();
-        }
-
-        if ('' != $this->getAddressRegion()) {
-            $parts[] = $this->getAddressRegion();
-        }
-
-        if ('' != $this->getPostcode()) {
-            $parts[] = $this->getPostcode();
-        }
-
-        if ('' != $this->getAddressCountry()) {
-            $parts[] = Countries::getName($this->getAddressCountry());
-        }
-
-        return implode($delimeter, $parts);
+        return $this->getFromDefaultAddress('country');
     }
 
     /**
@@ -447,65 +385,50 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      */
     public function getAddressUrl(): ?string
     {
-        return $this->addressUrl;
+        return $this->getFromDefaultAddress('url');
     }
 
     /**
-     * @param string|null $addressUrl
-     */
-    public function setAddressUrl(?string $addressUrl): Company
-    {
-        $this->addressUrl = $addressUrl;
-
-        return $this;
-    }
-
-    /**
-     * Set lat.
-     *
-     * @param string|null $lat
-     *
-     * @return Company
-     */
-    public function setLat($lat = null)
-    {
-        $this->lat = $lat;
-
-        return $this;
-    }
-
-    /**
-     * Get lat.
-     *
      * @return string|null
      */
-    public function getLat()
+    public function getLat(): ?string
     {
-        return $this->lat;
+        return $this->getFromDefaultAddress('lat');
     }
 
     /**
-     * Set lng.
-     *
-     * @param string|null $lng
-     *
-     * @return Company
-     */
-    public function setLng($lng = null)
-    {
-        $this->lng = $lng;
-
-        return $this;
-    }
-
-    /**
-     * Get lng.
-     *
      * @return string|null
      */
-    public function getLng()
+    public function getLng(): ?string
     {
-        return $this->lng;
+        return $this->getFromDefaultAddress('lng');
+    }
+
+    /**
+     * @param string $field
+     *
+     * @return mixed
+     */
+    public function getFromDefaultAddress(string $field): ?string
+    {
+        if (!$this->hasDefaultAddress()) {
+            return null;
+        }
+
+        $address = $this->getDefaultAddress();
+        $method  = 'get'.ucwords($field);
+
+        return $address->{$method}();
+    }
+
+    /**
+     * @param string $delimeter
+     *
+     * @return string
+     */
+    public function getAddress(string $delimeter = " \n"): string
+    {
+        return $this->getFromDefaultAddress('address');
     }
 
     /**
