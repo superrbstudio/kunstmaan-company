@@ -5,6 +5,7 @@ namespace Superrb\KunstmaanCompanyBundle\Entity;
 use App\Entity\Service;
 use ArrayAccess;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Kunstmaan\AdminBundle\Entity\AbstractEntity;
 use Kunstmaan\AdminBundle\Entity\DeepCloneInterface;
@@ -184,7 +185,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     private $image;
 
     /**
-     * @var ArrayCollection
+     * @var Collection
      *
      * @ORM\OneToMany(targetEntity="\Superrb\KunstmaanCompanyBundle\Entity\Day", mappedBy="company",
      *      cascade={"persist", "remove"}, orphanRemoval=true)
@@ -510,9 +511,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param string|null $facebook
      *
-     * @return Company
+     * @return self
      */
-    public function setFacebook($facebook = null)
+    public function setFacebook(?string $facebook = null): self
     {
         $this->facebook = $facebook;
 
@@ -524,7 +525,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getFacebook()
+    public function getFacebook(): ?string
     {
         return $this->facebook;
     }
@@ -534,9 +535,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param string|null $twitter
      *
-     * @return Company
+     * @return self
      */
-    public function setTwitter($twitter = null)
+    public function setTwitter(?string $twitter = null): self
     {
         $this->twitter = $twitter;
 
@@ -548,7 +549,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getTwitter()
+    public function getTwitter(): ?string
     {
         return $this->twitter;
     }
@@ -558,9 +559,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param string|null $instagram
      *
-     * @return Company
+     * @return self
      */
-    public function setInstagram($instagram = null)
+    public function setInstagram(?string $instagram = null): self
     {
         $this->instagram = $instagram;
 
@@ -572,7 +573,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getInstagram()
+    public function getInstagram(): ?string
     {
         return $this->instagram;
     }
@@ -582,9 +583,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param string|null $youtube
      *
-     * @return Company
+     * @return self
      */
-    public function setYoutube($youtube = null)
+    public function setYoutube(?string $youtube = null): self
     {
         $this->youtube = $youtube;
 
@@ -596,7 +597,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getYoutube()
+    public function getYoutube(): ?string
     {
         return $this->youtube;
     }
@@ -606,9 +607,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param string|null $vimeo
      *
-     * @return Company
+     * @return self
      */
-    public function setVimeo($vimeo = null)
+    public function setVimeo(?string $vimeo = null): self
     {
         $this->vimeo = $vimeo;
 
@@ -620,7 +621,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getVimeo()
+    public function getVimeo(): ?string
     {
         return $this->vimeo;
     }
@@ -630,9 +631,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param string|null $pinterest
      *
-     * @return Company
+     * @return self
      */
-    public function setPinterest($pinterest = null)
+    public function setPinterest(?string $pinterest = null): self
     {
         $this->pinterest = $pinterest;
 
@@ -644,7 +645,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getPinterest()
+    public function getPinterest(): ?string
     {
         return $this->pinterest;
     }
@@ -654,9 +655,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param string|null $linkedin
      *
-     * @return Company
+     * @return self
      */
-    public function setLinkedin($linkedin = null)
+    public function setLinkedin(?string $linkedin = null): self
     {
         $this->linkedin = $linkedin;
 
@@ -668,7 +669,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getLinkedin()
+    public function getLinkedin(): ?string
     {
         return $this->linkedin;
     }
@@ -678,9 +679,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param string|null $dribbble
      *
-     * @return Company
+     * @return self
      */
-    public function setDribbble($dribbble = null)
+    public function setDribbble(?string $dribbble = null): self
     {
         $this->dribbble = $dribbble;
 
@@ -692,7 +693,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getDribbble()
+    public function getDribbble(): ?string
     {
         return $this->dribbble;
     }
@@ -700,59 +701,60 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     /**
      * @return array
      */
-    public function getSocialMedias(): array {
-        $networks = array();
+    public function getSocialMedias(): array
+    {
+        $networks = [];
 
-        if($this->getFacebook() != '') {
+        if ('' != $this->getFacebook()) {
             $networks[] = [
                 'url' => $this->getFacebook(),
                 'key' => 'facebook',
             ];
         }
 
-        if($this->getTwitter() != '') {
+        if ('' != $this->getTwitter()) {
             $networks[] = [
                 'url' => $this->getTwitter(),
                 'key' => 'twitter',
             ];
         }
 
-        if($this->getInstagram() != '') {
+        if ('' != $this->getInstagram()) {
             $networks[] = [
                 'url' => $this->getInstagram(),
                 'key' => 'instagram',
             ];
         }
 
-        if($this->getYoutube() != '') {
+        if ('' != $this->getYoutube()) {
             $networks[] = [
                 'url' => $this->getYoutube(),
                 'key' => 'youtube',
             ];
         }
 
-        if($this->getVimeo() != '') {
+        if ('' != $this->getVimeo()) {
             $networks[] = [
                 'url' => $this->getVimeo(),
                 'key' => 'vimeo',
             ];
         }
 
-        if($this->getPinterest() != '') {
+        if ('' != $this->getPinterest()) {
             $networks[] = [
                 'url' => $this->getPinterest(),
                 'key' => 'pinterest',
             ];
         }
 
-        if($this->getLinkedin() != '') {
+        if ('' != $this->getLinkedin()) {
             $networks[] = [
                 'url' => $this->getLinkedin(),
                 'key' => 'linkedin',
             ];
         }
 
-        if($this->getDribbble() != '') {
+        if ('' != $this->getDribbble()) {
             $networks[] = [
                 'url' => $this->getDribbble(),
                 'key' => 'dribbble',
@@ -767,9 +769,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param string|null $phone
      *
-     * @return Company
+     * @return self
      */
-    public function setPhone($phone = null)
+    public function setPhone($phone = null): ?string
     {
         $this->phone = $phone;
 
@@ -781,7 +783,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getPhone()
+    public function getPhone(): ?string
     {
         return $this->phone;
     }
@@ -791,9 +793,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param string|null $phoneLink
      *
-     * @return Company
+     * @return self
      */
-    public function setPhoneLink($phoneLink = null)
+    public function setPhoneLink(?string $phoneLink = null): self
     {
         $this->phoneLink = $phoneLink;
 
@@ -805,7 +807,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getPhoneLink()
+    public function getPhoneLink(): ?string
     {
         return $this->phoneLink;
     }
@@ -815,9 +817,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param string|null $email
      *
-     * @return Company
+     * @return self
      */
-    public function setEmail($email = null)
+    public function setEmail(?string $email = null): self
     {
         $this->email = $email;
 
@@ -829,7 +831,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getEmail()
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -839,9 +841,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param string|null $companyName
      *
-     * @return Company
+     * @return self
      */
-    public function setCompanyName($companyName = null)
+    public function setCompanyName(?string $companyName = null): self
     {
         $this->companyName = $companyName;
 
@@ -853,7 +855,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getCompanyName()
+    public function getCompanyName(): ?string
     {
         return $this->companyName;
     }
@@ -863,9 +865,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param Media|null $logo
      *
-     * @return Company
+     * @return self
      */
-    public function setLogo(Media $logo = null)
+    public function setLogo(Media $logo = null): self
     {
         $this->logo = $logo;
 
@@ -877,7 +879,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return Media|null
      */
-    public function getLogo()
+    public function getLogo(): ?Media
     {
         return $this->logo;
     }
@@ -887,9 +889,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param Media|null $image
      *
-     * @return Service
+     * @return self
      */
-    public function setImage(Media $image = null)
+    public function setImage(Media $image = null): self
     {
         $this->image = $image;
 
@@ -901,7 +903,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return Media|null
      */
-    public function getImage()
+    public function getImage(): ?Media
     {
         return $this->image;
     }
@@ -917,11 +919,11 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     /**
      * Add day.
      *
-     * @param \Superrb\KunstmaanCompanyBundle\Entity\Day $day
+     * @param Day $day
      *
-     * @return Company
+     * @return self
      */
-    public function addDay(\Superrb\KunstmaanCompanyBundle\Entity\Day $day)
+    public function addDay(Day $day): self
     {
         $day->setCompany($this);
         $this->days[] = $day;
@@ -932,21 +934,23 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     /**
      * Remove day.
      *
-     * @param \Superrb\KunstmaanCompanyBundle\Entity\Day $day
+     * @param Day $day
      *
-     * @return bool TRUE if this collection contained the specified element, FALSE otherwise
+     * @return self
      */
-    public function removeDay(\Superrb\KunstmaanCompanyBundle\Entity\Day $day)
+    public function removeDay(Day $day): self
     {
-        return $this->days->removeElement($day);
+        $this->days->removeElement($day);
+
+        return $this;
     }
 
     /**
      * Get days.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
-    public function getDays()
+    public function getDays(): Collection
     {
         return $this->days;
     }
