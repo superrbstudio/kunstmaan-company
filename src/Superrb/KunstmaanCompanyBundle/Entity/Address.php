@@ -91,9 +91,9 @@ class Address extends AbstractEntity
     private $displayOrder = 0;
 
     /**
-     * @return Company
+     * @return Company|null
      */
-    public function getCompany(): Company
+    public function getCompany(): ?Company
     {
         return $this->company;
     }

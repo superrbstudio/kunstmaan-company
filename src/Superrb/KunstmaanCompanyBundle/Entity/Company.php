@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Kunstmaan\AdminBundle\Entity\AbstractEntity;
 use Kunstmaan\AdminBundle\Entity\DeepCloneInterface;
 use Kunstmaan\MediaBundle\Entity\Media;
+use libphonenumber\PhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -305,7 +306,11 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      */
     public function getDefaultAddress(): ?Address
     {
-        return $this->defaultAddress;
+        if (null !== $this->defaultAddress) {
+            return $this->defaultAddress;
+        }
+
+        return $this->getAddresses()->first() ?: null;
     }
 
     /**
@@ -313,7 +318,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      */
     public function hasDefaultAddress(): bool
     {
-        return null !== $this->defaultAddress;
+        return null !== $this->getDefaultAddress();
     }
 
     /**
@@ -406,10 +411,11 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
 
     /**
      * @param string $field
+     * @param array  $args
      *
      * @return mixed
      */
-    public function getFromDefaultAddress(string $field): ?string
+    public function getFromDefaultAddress(string $field, ...$args): ?string
     {
         if (!$this->hasDefaultAddress()) {
             return null;
@@ -418,7 +424,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
         $address = $this->getDefaultAddress();
         $method  = 'get'.ucwords($field);
 
-        return $address->{$method}();
+        return $address->{$method}(...$args);
     }
 
     /**
@@ -428,7 +434,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      */
     public function getAddress(string $delimeter = " \n"): string
     {
-        return $this->getFromDefaultAddress('address');
+        return $this->getFromDefaultAddress('address', $delimeter);
     }
 
     /**
@@ -692,11 +698,11 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     /**
      * Set phone.
      *
-     * @param string|null $phone
+     * @param PhoneNumber|null $phone
      *
      * @return self
      */
-    public function setPhone($phone = null): ?string
+    public function setPhone(?PhoneNumber $phone = null): ?string
     {
         $this->phone = $phone;
 
@@ -706,9 +712,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     /**
      * Get phone.
      *
-     * @return string|null
+     * @return PhoneNumber|null
      */
-    public function getPhone(): ?string
+    public function getPhone(): ?PhoneNumber
     {
         return $this->phone;
     }
