@@ -35,8 +35,8 @@ class CompanyMenuAdaptor implements MenuAdaptorInterface
             $menuItem = new MenuItem($menu);
             $menuItem
                 ->setRoute('superrbkunstmaancompanybundle_admin_address')
-                ->setLabel('Addresses')
-                ->setUniqueId('Addresses')
+                ->setLabel('Company Addresses')
+                ->setUniqueId('Company Addresses')
                 ->setParent($parent);
             if (0 === stripos($request->attributes->get('_route'), $menuItem->getRoute())) {
                 $menuItem->setActive(true);
