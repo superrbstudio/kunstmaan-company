@@ -16,7 +16,12 @@ Add the following to your `/config/routes.yaml`
 superrbkunstmaancompanybundle_company_admin_list:
     resource: '@SuperrbKunstmaanCompanyBundle/Controller/CompanyAdminListController.php'
     type:     annotation
-    prefix:   /admin/company
+    prefix:   /%kunstmaan_admin.admin_prefix%/company
+
+superrbkunstmaancompanybundle_address_admin_list:
+    resource: '@SuperrbKunstmaanCompanyBundle/Controller/AddressAdminListController.php'
+    type:     annotation
+    prefix:   /%kunstmaan_admin.admin_prefix%/company/address
 ```
 
 ### Step 3: Generate Database Tables
