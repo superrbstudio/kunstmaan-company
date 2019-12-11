@@ -5,6 +5,7 @@ namespace Superrb\KunstmaanCompanyBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Kunstmaan\AdminBundle\Entity\AbstractEntity;
 use Symfony\Component\Intl\Countries;
+use libphonenumber\PhoneNumber;
 
 /**
  * Address.
@@ -68,6 +69,20 @@ class Address extends AbstractEntity
      * @ORM\Column(name="url", type="string", length=255, nullable=true)
      */
     private $url;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="phone", type="phone_number", nullable=true)
+     */
+    private $phone;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="email", type="string", length=255, nullable=true)
+     */
+    private $email;
 
     /**
      * @var string|null
@@ -248,6 +263,54 @@ class Address extends AbstractEntity
         $this->url = $url;
 
         return $this;
+    }
+
+    /**
+     * Set phone.
+     *
+     * @param PhoneNumber|null $phone
+     *
+     * @return self
+     */
+    public function setPhone(?PhoneNumber $phone = null): ?string
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get phone.
+     *
+     * @return PhoneNumber|null
+     */
+    public function getPhone(): ?PhoneNumber
+    {
+        return $this->phone;
+    }
+
+    /**
+     * Set email.
+     *
+     * @param string|null $email
+     *
+     * @return self
+     */
+    public function setEmail(?string $email = null): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email.
+     *
+     * @return string|null
+     */
+    public function getEmail(): ?string
+    {
+        return $this->email;
     }
 
     /**

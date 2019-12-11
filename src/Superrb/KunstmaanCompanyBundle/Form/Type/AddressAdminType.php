@@ -10,6 +10,10 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
+use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
@@ -60,6 +64,19 @@ class AddressAdminType extends AbstractType
         ]);
         $builder->add('url', UrlType::class, [
             'required' => false,
+        ]);
+        $builder->add('email', EmailType::class, [
+            'required'    => false,
+            'constraints' => [
+                new Email(),
+            ],
+        ]);
+        $builder->add('phone', PhoneNumberType::class, [
+            'required'    => false,
+            'attr'        => ['info_text' => 'Please enter the full international format (e.g. +44 20 1111 1111)'],
+            'constraints' => [
+                new PhoneNumber(),
+            ],
         ]);
         $builder->add('lat', TextType::class, [
             'required' => false,

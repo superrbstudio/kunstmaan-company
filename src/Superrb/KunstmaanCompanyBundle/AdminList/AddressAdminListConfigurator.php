@@ -36,6 +36,8 @@ class AddressAdminListConfigurator extends AbstractDoctrineORMAdminListConfigura
         $this->addField('postcode', 'Postcode', true);
         $this->addField('country', 'Country', true);
         $this->addField('url', 'Url', true);
+        $this->addField('email', 'Email', true);
+        $this->addField('phone', 'Phone', true);
         $this->addField('lat', 'Lat', true);
         $this->addField('lng', 'Lng', true);
         $this->addField('displayOrder', 'Display order', true);
@@ -53,6 +55,8 @@ class AddressAdminListConfigurator extends AbstractDoctrineORMAdminListConfigura
         $this->addFilter('postcode', new ORM\StringFilterType('postcode'), 'Postcode');
         $this->addFilter('country', new ORM\StringFilterType('country'), 'Country');
         $this->addFilter('url', new ORM\StringFilterType('url'), 'Url');
+        $this->addFilter('email', new ORM\StringFilterType('email'), 'Email');
+        $this->addFilter('phone', new ORM\StringFilterType('phone'), 'Phone');
         $this->addFilter('lat', new ORM\StringFilterType('lat'), 'Lat');
         $this->addFilter('lng', new ORM\StringFilterType('lng'), 'Lng');
         $this->addFilter('displayOrder', new ORM\NumberFilterType('displayOrder'), 'Display order');
