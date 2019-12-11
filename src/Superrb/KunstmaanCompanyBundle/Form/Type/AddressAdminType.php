@@ -53,10 +53,7 @@ class AddressAdminType extends AbstractType
             'required' => false,
         ]);
         $builder->add('postcode', TextType::class, [
-            'required'    => true,
-            'constraints' => [
-                new NotBlank(),
-            ],
+            'required' => false,
         ]);
         $builder->add('country', CountryType::class, [
             'required'          => false,
