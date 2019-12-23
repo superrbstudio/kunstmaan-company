@@ -100,7 +100,7 @@ class MigrateCommand extends Command
         }
     }
 
-    public function rollback(int $startPoint = 0)
+    public function rollback(int $startPoint = 999)
     {
         // this down() migration is auto-generated, please modify it to your needs
         if ('mysql' !== $this->em->getConnection()->getDatabasePlatform()->getName()) {
