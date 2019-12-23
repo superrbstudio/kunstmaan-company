@@ -9,6 +9,10 @@ services:
         tags:
             - { name: twig.extension }
 
+    SuperrbKunstmaanCompanyBundle.company.migrate_command:
+        class: Superrb\KunstmaanCompanyBundle\Command\MigrateCommand
+        arguments: ["@doctrine.orm.entity_manager"]
+
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
     Superrb\KunstmaanCompanyBundle\Repository\:
