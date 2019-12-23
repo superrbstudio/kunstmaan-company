@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use ErrorException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class MigrateCommand extends Command
@@ -30,7 +31,7 @@ class MigrateCommand extends Command
         $this->input  = $input;
         $this->output = $output;
 
-        if ($rollback = $this->input->getOption('rollback')) {
+        if ($this->input->getOption('rollback')) {
             $this->rollback();
 
             return;
