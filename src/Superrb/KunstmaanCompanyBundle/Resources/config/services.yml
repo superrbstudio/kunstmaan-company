@@ -12,6 +12,9 @@ services:
     SuperrbKunstmaanCompanyBundle.company.migrate_command:
         class: Superrb\KunstmaanCompanyBundle\Command\MigrateCommand
         arguments: ["@doctrine.orm.entity_manager"]
+        tags:
+            - name: "console.command"
+              command: "superrb:kunstmaan-company:migrate-addresses"
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
