@@ -100,7 +100,7 @@ class MigrateCommand extends Command
         }
     }
 
-    public function rollback(int $startPoint = 999)
+    public function rollback(int $startPoint = 0)
     {
         // this down() migration is auto-generated, please modify it to your needs
         if ('mysql' !== $this->em->getConnection()->getDatabasePlatform()->getName()) {
@@ -134,12 +134,14 @@ class MigrateCommand extends Command
         }
 
         if ($startPoint > 2) {
+            $sql  = 'ALTER TABLE skcb_companies DROP FOREIGN KEY FK_D5A978F4BD94FB16';
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+
             $sql  = 'DROP INDEX IDX_D5A978F4BD94FB16 ON skcb_companies';
             $stmt = $this->em->getConnection()->prepare($sql);
             $stmt->execute();
-        }
 
-        if ($startPoint > 2) {
             $sql  = 'ALTER TABLE skcb_companies DROP default_address_id';
             $stmt = $this->em->getConnection()->prepare($sql);
             $stmt->execute();
@@ -147,10 +149,6 @@ class MigrateCommand extends Command
         }
 
         if ($startPoint > 1) {
-            $sql  = 'ALTER TABLE skcb_companies DROP FOREIGN KEY FK_D5A978F4BD94FB16';
-            $stmt = $this->em->getConnection()->prepare($sql);
-            $stmt->execute();
-
             $sql  = 'DROP TABLE skcb_addresses';
             $stmt = $this->em->getConnection()->prepare($sql);
             $stmt->execute();
