@@ -26,6 +26,14 @@ superrbkunstmaancompanybundle_address_admin_list:
 
 ### Step 3: Generate Database Tables
 
+> **IMPORTANT:** If upgrading KunstmaanCompanyBundle from 1.x.x to 2.x.x, you will need to migrate existing data prior to running any Doctrine commands, to avoid losing address data.
+
+    ```bash
+    bin/console superrb:kunstmaan-company:migrate-addresses
+    ```
+
+    If you need to roll back, add `--rollback` to the command above
+
 You can use Doctrine Migrations or a schema update, it is your choice
 
 ```bash
