@@ -39,7 +39,8 @@ class MigrateCommand extends Command
 
     public function configure()
     {
-        $this->setDescription('Migrate to multiple addresses')
+        $this->setName('superrb:kunstmaan-company:migrate-addresses')
+            ->setDescription('Migrate to multiple addresses')
             ->setHelp('Migrates address data from company table to new addresses table')
             ->addOption('rollback', 'r', InputOption::VALUE_NONE, 'Rollback data');
     }
