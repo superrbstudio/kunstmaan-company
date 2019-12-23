@@ -103,7 +103,7 @@ class MigrateCommand extends Command
     public function rollback(int $startPoint = 999)
     {
         // this down() migration is auto-generated, please modify it to your needs
-        if ('mysql' !== $this->connection->getDatabasePlatform()->getName()) {
+        if ('mysql' !== $this->em->getConnection()->getDatabasePlatform()->getName()) {
             throw new ErrorException('Migration can only be executed safely on \'mysql\'.');
         }
 
