@@ -28,6 +28,12 @@ class MigrateCommand extends Command
         $this->input  = $input;
         $this->output = $output;
 
+        if ($rollback = $this->input->getOption('rollback')) {
+            $this->rollback();
+
+            return;
+        }
+
         $this->migrate();
     }
 

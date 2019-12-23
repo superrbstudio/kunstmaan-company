@@ -2,9 +2,9 @@
 
 namespace Superrb\KunstmaanCompanyBundle\Extension;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Superrb\KunstmaanCompanyBundle\Entity\Company;
+use Superrb\KunstmaanCompanyBundle\SuperrbKunstmaanCompanyBundle;
 use Symfony\Component\Templating\EngineInterface;
 use Twig\TwigFunction;
 
@@ -30,14 +30,23 @@ class CompanyTwigExtension extends \Twig_Extension implements \Twig_Extension_Gl
 
     /**
      * CompanyTwigExtension constructor.
-     *
-     * @param EntityManagerInterface $em
-     * @param EngineInterface        $twigEngine
      */
     public function __construct(EntityManagerInterface $em, EngineInterface $twigEngine)
     {
         $this->setEntityManager($em);
         $this->setTemplating($twigEngine);
+
+        // Don't attempt to load company unless migration has been run, otherwise Doctrine errors prevent
+        // the migration command from initialising
+        if (SuperrbKunstmaanCompanyBundle::VERSION >= 2) {
+            $stmt = $this->entityManager->getConnection()->prepare('SHOW COLUMNS FROM `skcb_companies` LIKE \'default_address_id\'');
+            $stmt->execute();
+
+            if (0 === count($stmt->fetchAll())) {
+                return;
+            }
+        }
+
         $this->setCompany($this->getEntityManager()->getRepository('SuperrbKunstmaanCompanyBundle:Company')->findOneBy(['id' => 1]));
     }
 
@@ -73,22 +82,14 @@ class CompanyTwigExtension extends \Twig_Extension implements \Twig_Extension_Gl
         ]);
     }
 
-    /**
-     * @return Company|null
-     */
     public function getCompany(): ?Company
     {
         return $this->company;
     }
 
-    /**
-     * @param Company|null $company
-     *
-     * @return CompanyTwigExtension
-     */
     public function setCompany(?Company $company): CompanyTwigExtension
     {
-        if(!($company instanceof Company)) {
+        if (!($company instanceof Company)) {
             $this->company = new Company();
         } else {
             $this->company = $company;
@@ -97,19 +98,11 @@ class CompanyTwigExtension extends \Twig_Extension implements \Twig_Extension_Gl
         return $this;
     }
 
-    /**
-     * @return EntityManagerInterface
-     */
     public function getEntityManager(): EntityManagerInterface
     {
         return $this->entityManager;
     }
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     *
-     * @return CompanyTwigExtension
-     */
     public function setEntityManager(EntityManagerInterface $entityManager): CompanyTwigExtension
     {
         $this->entityManager = $entityManager;
@@ -117,19 +110,11 @@ class CompanyTwigExtension extends \Twig_Extension implements \Twig_Extension_Gl
         return $this;
     }
 
-    /**
-     * @return EngineInterface
-     */
     public function getTemplating(): EngineInterface
     {
         return $this->templating;
     }
 
-    /**
-     * @param EngineInterface $templating
-     *
-     * @return CompanyTwigExtension
-     */
     public function setTemplating(EngineInterface $templating): CompanyTwigExtension
     {
         $this->templating = $templating;
