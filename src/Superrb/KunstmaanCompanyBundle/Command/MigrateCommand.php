@@ -82,7 +82,7 @@ class MigrateCommand extends Command
             ++$rollbackPoint;
 
             $sql  = 'INSERT INTO skcb_addresses (id, company_id, name, street_address, locality, region, postcode, country, url, phone, email, lat, lng, displayOrder) SELECT "1", id, "Main", street_address, address_locality, address_region, postcode, address_country, address_url, phone, email, lat, lng, "1" FROM skcb_companies';
-            $sql  = 'UPDATE skcb_companies SET default_address_id = 1';
+            $sql  = 'UPDATE skcb_companies SET default_address_id = (SELECT id FROM skcb_addresses LIMIT 1)';
             $stmt = $this->em->getConnection()->prepare($sql);
             $stmt->execute();
             $this->output->writeLn('<fg=green>Migrated address data</>');
@@ -137,11 +137,9 @@ class MigrateCommand extends Command
             $sql  = 'DROP INDEX IDX_D5A978F4BD94FB16 ON skcb_companies';
             $stmt = $this->em->getConnection()->prepare($sql);
             $stmt->execute();
+        }
 
-            $sql  = 'ALTER TABLE skcb_companies DROP FOREIGN KEY FK_D5A978F4BD94FB16';
-            $stmt = $this->em->getConnection()->prepare($sql);
-            $stmt->execute();
-
+        if ($startPoint > 2) {
             $sql  = 'ALTER TABLE skcb_companies DROP default_address_id';
             $stmt = $this->em->getConnection()->prepare($sql);
             $stmt->execute();
@@ -149,6 +147,10 @@ class MigrateCommand extends Command
         }
 
         if ($startPoint > 1) {
+            $sql  = 'ALTER TABLE skcb_companies DROP FOREIGN KEY FK_D5A978F4BD94FB16';
+            $stmt = $this->em->getConnection()->prepare($sql);
+            $stmt->execute();
+
             $sql  = 'DROP TABLE skcb_addresses';
             $stmt = $this->em->getConnection()->prepare($sql);
             $stmt->execute();
