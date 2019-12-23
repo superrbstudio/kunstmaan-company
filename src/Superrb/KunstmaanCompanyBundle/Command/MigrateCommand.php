@@ -111,14 +111,14 @@ class MigrateCommand extends Command
 
         $this->output->writeLn('Starting rollback');
 
-        if ($startPoint > 4) {
+        if ($startPoint >= 4) {
             $sql  = 'ALTER TABLE skcb_companies ADD street_address VARCHAR(255) CHARACTER SET utf8 DEFAULT NULL COLLATE `utf8_unicode_ci`, ADD address_locality VARCHAR(255) CHARACTER SET utf8 DEFAULT NULL COLLATE `utf8_unicode_ci`, ADD address_region VARCHAR(255) CHARACTER SET utf8 DEFAULT NULL COLLATE `utf8_unicode_ci`, ADD postcode VARCHAR(255) CHARACTER SET utf8 DEFAULT NULL COLLATE `utf8_unicode_ci`, ADD address_country VARCHAR(255) CHARACTER SET utf8 DEFAULT NULL COLLATE `utf8_unicode_ci`, ADD lat VARCHAR(255) CHARACTER SET utf8 DEFAULT NULL COLLATE `utf8_unicode_ci`, ADD lng VARCHAR(255) CHARACTER SET utf8 DEFAULT NULL COLLATE `utf8_unicode_ci`, ADD address_url VARCHAR(255) CHARACTER SET utf8 DEFAULT NULL COLLATE `utf8_unicode_ci`';
             $stmt = $this->em->getConnection()->prepare($sql);
             $stmt->execute();
             $this->output->writeLn('<fg=green>Re-created address columns on skcb_companies</>');
         }
 
-        if ($startPoint > 3) {
+        if ($startPoint >= 3) {
             $sql = 'UPDATE skcb_companies c
                             JOIN skcb_addresses a
                             ON a.id = c.default_address_id
@@ -135,7 +135,7 @@ class MigrateCommand extends Command
             $this->output->writeLn('<fg=green>Migrate data from addresses table to company</>');
         }
 
-        if ($startPoint > 2) {
+        if ($startPoint >= 2) {
             $sql  = 'ALTER TABLE skcb_companies DROP FOREIGN KEY FK_D5A978F4BD94FB16';
             $stmt = $this->em->getConnection()->prepare($sql);
             $stmt->execute();
@@ -150,7 +150,7 @@ class MigrateCommand extends Command
             $this->output->writeLn('<fg=green>Drop default_address_id column on skcb_companies</>');
         }
 
-        if ($startPoint > 1) {
+        if ($startPoint >= 1) {
             $sql  = 'DROP TABLE skcb_addresses';
             $stmt = $this->em->getConnection()->prepare($sql);
             $stmt->execute();
