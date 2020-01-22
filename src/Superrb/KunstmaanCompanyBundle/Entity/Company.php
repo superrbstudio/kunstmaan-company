@@ -2,14 +2,14 @@
 
 namespace Superrb\KunstmaanCompanyBundle\Entity;
 
-use App\Entity\Service;
 use ArrayAccess;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Kunstmaan\AdminBundle\Entity\AbstractEntity;
 use Kunstmaan\AdminBundle\Entity\DeepCloneInterface;
 use Kunstmaan\MediaBundle\Entity\Media;
-use Symfony\Component\Intl\Countries;
+use libphonenumber\PhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -34,62 +34,6 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="street_address", type="string", length=255, nullable=true)
-     */
-    private $streetAddress;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="address_locality", type="string", length=255, nullable=true)
-     */
-    private $addressLocality;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="address_region", type="string", length=255, nullable=true)
-     */
-    private $addressRegion;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="postcode", type="string", length=255, nullable=true)
-     */
-    private $postcode;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="address_country", type="string", length=255, nullable=true)
-     */
-    private $addressCountry;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="address_url", type="string", length=255, nullable=true)
-     */
-    private $addressUrl;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="lat", type="string", length=255, nullable=true)
-     */
-    private $lat;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="lng", type="string", length=255, nullable=true)
-     */
-    private $lng;
 
     /**
      * @var string|null
@@ -184,7 +128,24 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     private $image;
 
     /**
-     * @var ArrayCollection
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="\Superrb\KunstmaanCompanyBundle\Entity\Address", mappedBy="company",
+     *      cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OrderBy({"displayOrder" = "ASC"})
+     */
+    private $addresses;
+
+    /**
+     * @var Address|null
+     *
+     * @ORM\OneToOne(targetEntity="\Superrb\KunstmaanCompanyBundle\Entity\Address")
+     * @ORM\JoinColumn(name="default_address_id", referencedColumnName="id")
+     */
+    private $defaultAddress;
+
+    /**
+     * @var Collection
      *
      * @ORM\OneToMany(targetEntity="\Superrb\KunstmaanCompanyBundle\Entity\Day", mappedBy="company",
      *      cascade={"persist", "remove"}, orphanRemoval=true)
@@ -199,6 +160,13 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
         foreach ($days as $day) {
             $cloneDay = clone $day;
             $this->addDay($cloneDay);
+        }
+
+        $addresses       = $this->getAddresses();
+        $this->addresses = new ArrayCollection();
+        foreach ($addresses as $address) {
+            $cloneAddress = clone $address;
+            $this->addAddress($cloneAddress);
         }
     }
 
@@ -270,9 +238,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param string|null $description
      *
-     * @return Company
+     * @return self
      */
-    public function setDescription($description = null)
+    public function setDescription(?string $description = null): self
     {
         $this->description = $description;
 
@@ -284,21 +252,87 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
     /**
-     * Set streetAddress.
-     *
-     * @param string|null $streetAddress
-     *
-     * @return Company
+     * @return Collection
      */
-    public function setStreetAddress($streetAddress = null)
+    public function getAddresses(): Collection
     {
-        $this->streetAddress = $streetAddress;
+        return $this->addresses;
+    }
+
+    /**
+     * @param Address $address
+     *
+     * @return self
+     */
+    public function addAddress(Address $address): self
+    {
+        $this->addresses->add($address);
+
+        return $this;
+    }
+
+    /**
+     * @param Address $address
+     *
+     * @return self
+     */
+    public function removeAddress(Address $address): self
+    {
+        $this->addresses->removeElement($address);
+
+        return $this;
+    }
+
+    /**
+     * @param Collection $addresses
+     *
+     * @return self
+     */
+    public function setAddresses(Collection $addresses): self
+    {
+        $this->addresses = $addresses;
+
+        return $this;
+    }
+
+    /**
+     * @return Address|null
+     */
+    public function getDefaultAddress(): ?Address
+    {
+        if (null !== $this->defaultAddress) {
+            return $this->defaultAddress;
+        }
+
+        return $this->getAddresses()->first() ?: null;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasDefaultAddress(): bool
+    {
+        return null !== $this->getDefaultAddress();
+    }
+
+    /**
+     * @param Address|null $address
+     *
+     * @return self
+     */
+    public function setDefaultAddress(?Address $address): self
+    {
+        if (!$this->addresses->contains($address)) {
+            $this->addAddress($address);
+        }
+
+        $this->defaultAddress = $address;
 
         return $this;
     }
@@ -308,23 +342,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getStreetAddress()
+    public function getStreetAddress(): ?string
     {
-        return $this->streetAddress;
-    }
-
-    /**
-     * Set addressLocality.
-     *
-     * @param string|null $addressLocality
-     *
-     * @return Company
-     */
-    public function setAddressLocality($addressLocality = null)
-    {
-        $this->addressLocality = $addressLocality;
-
-        return $this;
+        return $this->getFromDefaultAddress('streetAddress');
     }
 
     /**
@@ -332,23 +352,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getAddressLocality()
+    public function getAddressLocality(): ?string
     {
-        return $this->addressLocality;
-    }
-
-    /**
-     * Set addressRegion.
-     *
-     * @param string|null $addressRegion
-     *
-     * @return Company
-     */
-    public function setAddressRegion($addressRegion = null)
-    {
-        $this->addressRegion = $addressRegion;
-
-        return $this;
+        return $this->getFromDefaultAddress('locality');
     }
 
     /**
@@ -356,23 +362,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getAddressRegion()
+    public function getAddressRegion(): ?string
     {
-        return $this->addressRegion;
-    }
-
-    /**
-     * Set postcode.
-     *
-     * @param string|null $postcode
-     *
-     * @return Company
-     */
-    public function setPostcode($postcode = null)
-    {
-        $this->postcode = $postcode;
-
-        return $this;
+        return $this->getFromDefaultAddress('region');
     }
 
     /**
@@ -380,129 +372,69 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getPostcode()
+    public function getPostcode(): ?string
     {
-        return $this->postcode;
+        return $this->getFromDefaultAddress('postcode');
     }
 
     /**
-     * Set addressCountry.
-     *
-     * @param string|null $addressCountry
-     *
-     * @return Company
-     */
-    public function setAddressCountry($addressCountry = null)
-    {
-        $this->addressCountry = $addressCountry;
-
-        return $this;
-    }
-
-    /**
-     * Get addressCountry.
-     *
      * @return string|null
      */
-    public function getAddressCountry()
+    public function getAddressCountry(): ?string
     {
-        return $this->addressCountry;
+        return $this->getFromDefaultAddress('country');
     }
-
-    /**
-     * @param string $delimeter
-     * @return string
-     */
-    public function getAddress($delimeter = " \n"): string {
-        $parts = [];
-
-        if($this->getStreetAddress() != '') {
-            $parts[] = $this->getStreetAddress();
-        }
-
-        if($this->getAddressLocality() != '') {
-            $parts[] = $this->getAddressLocality();
-        }
-
-        if($this->getAddressRegion() != '') {
-            $parts[] = $this->getAddressRegion();
-        }
-
-        if($this->getPostcode() != '') {
-            $parts[] = $this->getPostcode();
-        }
-
-        if($this->getAddressCountry() != '') {
-            $parts[] = Countries::getName($this->getAddressCountry());
-        }
-
-        return implode($delimeter, $parts);
-     }
 
     /**
      * @return string|null
      */
     public function getAddressUrl(): ?string
     {
-        return $this->addressUrl;
+        return $this->getFromDefaultAddress('url');
     }
 
     /**
-     * @param string|null $addressUrl
-     */
-    public function setAddressUrl(?string $addressUrl): Company
-    {
-        $this->addressUrl = $addressUrl;
-
-        return $this;
-    }
-
-    /**
-     * Set lat.
-     *
-     * @param string|null $lat
-     *
-     * @return Company
-     */
-    public function setLat($lat = null)
-    {
-        $this->lat = $lat;
-
-        return $this;
-    }
-
-    /**
-     * Get lat.
-     *
      * @return string|null
      */
-    public function getLat()
+    public function getLat(): ?string
     {
-        return $this->lat;
+        return $this->getFromDefaultAddress('lat');
     }
 
     /**
-     * Set lng.
-     *
-     * @param string|null $lng
-     *
-     * @return Company
-     */
-    public function setLng($lng = null)
-    {
-        $this->lng = $lng;
-
-        return $this;
-    }
-
-    /**
-     * Get lng.
-     *
      * @return string|null
      */
-    public function getLng()
+    public function getLng(): ?string
     {
-        return $this->lng;
+        return $this->getFromDefaultAddress('lng');
+    }
+
+    /**
+     * @param string $field
+     * @param array  $args
+     *
+     * @return mixed
+     */
+    public function getFromDefaultAddress(string $field, ...$args): ?string
+    {
+        if (!$this->hasDefaultAddress()) {
+            return null;
+        }
+
+        $address = $this->getDefaultAddress();
+        $method  = 'get'.ucwords($field);
+
+        return $address->{$method}(...$args);
+    }
+
+    /**
+     * @param string $delimeter
+     *
+     * @return string
+     */
+    public function getAddress(string $delimeter = " \n"): string
+    {
+        return $this->getFromDefaultAddress('address', $delimeter);
     }
 
     /**
@@ -510,9 +442,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param string|null $facebook
      *
-     * @return Company
+     * @return self
      */
-    public function setFacebook($facebook = null)
+    public function setFacebook(?string $facebook = null): self
     {
         $this->facebook = $facebook;
 
@@ -524,7 +456,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getFacebook()
+    public function getFacebook(): ?string
     {
         return $this->facebook;
     }
@@ -534,9 +466,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param string|null $twitter
      *
-     * @return Company
+     * @return self
      */
-    public function setTwitter($twitter = null)
+    public function setTwitter(?string $twitter = null): self
     {
         $this->twitter = $twitter;
 
@@ -548,7 +480,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getTwitter()
+    public function getTwitter(): ?string
     {
         return $this->twitter;
     }
@@ -558,9 +490,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param string|null $instagram
      *
-     * @return Company
+     * @return self
      */
-    public function setInstagram($instagram = null)
+    public function setInstagram(?string $instagram = null): self
     {
         $this->instagram = $instagram;
 
@@ -572,7 +504,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getInstagram()
+    public function getInstagram(): ?string
     {
         return $this->instagram;
     }
@@ -582,9 +514,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param string|null $youtube
      *
-     * @return Company
+     * @return self
      */
-    public function setYoutube($youtube = null)
+    public function setYoutube(?string $youtube = null): self
     {
         $this->youtube = $youtube;
 
@@ -596,7 +528,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getYoutube()
+    public function getYoutube(): ?string
     {
         return $this->youtube;
     }
@@ -606,9 +538,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param string|null $vimeo
      *
-     * @return Company
+     * @return self
      */
-    public function setVimeo($vimeo = null)
+    public function setVimeo(?string $vimeo = null): self
     {
         $this->vimeo = $vimeo;
 
@@ -620,7 +552,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getVimeo()
+    public function getVimeo(): ?string
     {
         return $this->vimeo;
     }
@@ -630,9 +562,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param string|null $pinterest
      *
-     * @return Company
+     * @return self
      */
-    public function setPinterest($pinterest = null)
+    public function setPinterest(?string $pinterest = null): self
     {
         $this->pinterest = $pinterest;
 
@@ -644,7 +576,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getPinterest()
+    public function getPinterest(): ?string
     {
         return $this->pinterest;
     }
@@ -654,9 +586,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param string|null $linkedin
      *
-     * @return Company
+     * @return self
      */
-    public function setLinkedin($linkedin = null)
+    public function setLinkedin(?string $linkedin = null): self
     {
         $this->linkedin = $linkedin;
 
@@ -668,7 +600,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getLinkedin()
+    public function getLinkedin(): ?string
     {
         return $this->linkedin;
     }
@@ -678,9 +610,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param string|null $dribbble
      *
-     * @return Company
+     * @return self
      */
-    public function setDribbble($dribbble = null)
+    public function setDribbble(?string $dribbble = null): self
     {
         $this->dribbble = $dribbble;
 
@@ -692,7 +624,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getDribbble()
+    public function getDribbble(): ?string
     {
         return $this->dribbble;
     }
@@ -700,59 +632,60 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     /**
      * @return array
      */
-    public function getSocialMedias(): array {
-        $networks = array();
+    public function getSocialMedias(): array
+    {
+        $networks = [];
 
-        if($this->getFacebook() != '') {
+        if ('' != $this->getFacebook()) {
             $networks[] = [
                 'url' => $this->getFacebook(),
                 'key' => 'facebook',
             ];
         }
 
-        if($this->getTwitter() != '') {
+        if ('' != $this->getTwitter()) {
             $networks[] = [
                 'url' => $this->getTwitter(),
                 'key' => 'twitter',
             ];
         }
 
-        if($this->getInstagram() != '') {
+        if ('' != $this->getInstagram()) {
             $networks[] = [
                 'url' => $this->getInstagram(),
                 'key' => 'instagram',
             ];
         }
 
-        if($this->getYoutube() != '') {
+        if ('' != $this->getYoutube()) {
             $networks[] = [
                 'url' => $this->getYoutube(),
                 'key' => 'youtube',
             ];
         }
 
-        if($this->getVimeo() != '') {
+        if ('' != $this->getVimeo()) {
             $networks[] = [
                 'url' => $this->getVimeo(),
                 'key' => 'vimeo',
             ];
         }
 
-        if($this->getPinterest() != '') {
+        if ('' != $this->getPinterest()) {
             $networks[] = [
                 'url' => $this->getPinterest(),
                 'key' => 'pinterest',
             ];
         }
 
-        if($this->getLinkedin() != '') {
+        if ('' != $this->getLinkedin()) {
             $networks[] = [
                 'url' => $this->getLinkedin(),
                 'key' => 'linkedin',
             ];
         }
 
-        if($this->getDribbble() != '') {
+        if ('' != $this->getDribbble()) {
             $networks[] = [
                 'url' => $this->getDribbble(),
                 'key' => 'dribbble',
@@ -765,11 +698,11 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     /**
      * Set phone.
      *
-     * @param string|null $phone
+     * @param PhoneNumber|null $phone
      *
-     * @return Company
+     * @return self
      */
-    public function setPhone($phone = null)
+    public function setPhone(?PhoneNumber $phone = null): ?string
     {
         $this->phone = $phone;
 
@@ -779,9 +712,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     /**
      * Get phone.
      *
-     * @return string|null
+     * @return PhoneNumber|null
      */
-    public function getPhone()
+    public function getPhone(): ?PhoneNumber
     {
         return $this->phone;
     }
@@ -791,9 +724,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param string|null $phoneLink
      *
-     * @return Company
+     * @return self
      */
-    public function setPhoneLink($phoneLink = null)
+    public function setPhoneLink(?string $phoneLink = null): self
     {
         $this->phoneLink = $phoneLink;
 
@@ -805,7 +738,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getPhoneLink()
+    public function getPhoneLink(): ?string
     {
         return $this->phoneLink;
     }
@@ -815,9 +748,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param string|null $email
      *
-     * @return Company
+     * @return self
      */
-    public function setEmail($email = null)
+    public function setEmail(?string $email = null): self
     {
         $this->email = $email;
 
@@ -829,7 +762,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getEmail()
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -839,9 +772,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param string|null $companyName
      *
-     * @return Company
+     * @return self
      */
-    public function setCompanyName($companyName = null)
+    public function setCompanyName(?string $companyName = null): self
     {
         $this->companyName = $companyName;
 
@@ -853,7 +786,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string|null
      */
-    public function getCompanyName()
+    public function getCompanyName(): ?string
     {
         return $this->companyName;
     }
@@ -863,9 +796,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param Media|null $logo
      *
-     * @return Company
+     * @return self
      */
-    public function setLogo(Media $logo = null)
+    public function setLogo(?Media $logo = null): self
     {
         $this->logo = $logo;
 
@@ -877,7 +810,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return Media|null
      */
-    public function getLogo()
+    public function getLogo(): ?Media
     {
         return $this->logo;
     }
@@ -887,9 +820,9 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @param Media|null $image
      *
-     * @return Service
+     * @return self
      */
-    public function setImage(Media $image = null)
+    public function setImage(?Media $image = null): self
     {
         $this->image = $image;
 
@@ -901,7 +834,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return Media|null
      */
-    public function getImage()
+    public function getImage(): ?Media
     {
         return $this->image;
     }
@@ -917,11 +850,11 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     /**
      * Add day.
      *
-     * @param \Superrb\KunstmaanCompanyBundle\Entity\Day $day
+     * @param Day $day
      *
-     * @return Company
+     * @return self
      */
-    public function addDay(\Superrb\KunstmaanCompanyBundle\Entity\Day $day)
+    public function addDay(Day $day): self
     {
         $day->setCompany($this);
         $this->days[] = $day;
@@ -932,21 +865,23 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     /**
      * Remove day.
      *
-     * @param \Superrb\KunstmaanCompanyBundle\Entity\Day $day
+     * @param Day $day
      *
-     * @return bool TRUE if this collection contained the specified element, FALSE otherwise
+     * @return self
      */
-    public function removeDay(\Superrb\KunstmaanCompanyBundle\Entity\Day $day)
+    public function removeDay(Day $day): self
     {
-        return $this->days->removeElement($day);
+        $this->days->removeElement($day);
+
+        return $this;
     }
 
     /**
      * Get days.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
-    public function getDays()
+    public function getDays(): Collection
     {
         return $this->days;
     }

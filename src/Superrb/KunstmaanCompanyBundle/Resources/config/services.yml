@@ -2,9 +2,24 @@ services:
     SuperrbKunstmaanCompanyBundle.menu.adaptor.company:
         class: Superrb\KunstmaanCompanyBundle\Helper\Menu\CompanyMenuAdaptor
         tags:
-            -  { name: 'kunstmaan_admin.menu.adaptor' }
+            - { name: "kunstmaan_admin.menu.adaptor" }
     SuperrbKunstmaanCompanyBundle.company.twig_extension:
         class: Superrb\KunstmaanCompanyBundle\Extension\CompanyTwigExtension
         arguments: ["@doctrine.orm.entity_manager", "@templating.engine.twig"]
         tags:
             - { name: twig.extension }
+
+    SuperrbKunstmaanCompanyBundle.company.migrate_command:
+        class: Superrb\KunstmaanCompanyBundle\Command\MigrateCommand
+        arguments: ["@doctrine.orm.entity_manager"]
+        tags:
+            - name: "console.command"
+              command: "superrb:kunstmaan-company:migrate-addresses"
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    Superrb\KunstmaanCompanyBundle\Repository\:
+        autowire: true
+        autoconfigure: true
+        resource: "../../Repository"
+        tags: ["doctrine.repository_service"]

@@ -4,13 +4,13 @@ namespace Superrb\KunstmaanCompanyBundle\Form\Type;
 
 use Kunstmaan\MediaBundle\Form\Type\MediaType;
 use Kunstmaan\MediaBundle\Validator\Constraints as Assert;
-use Kunstmaan\NodeBundle\Form\Type\URLChooserType;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber;
+use Superrb\KunstmaanCompanyBundle\Entity\Address;
 use Superrb\KunstmaanCompanyBundle\Entity\Company;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -40,81 +40,64 @@ class CompanyAdminType extends AbstractType
             'required' => true,
         ])->add('description', TextareaType::class, [
             'required' => false,
-        ])->add('streetAddress', TextType::class, [
-            'required' => false,
-        ])->add('addressLocality', TextType::class, [
-            'required' => false,
-        ])->add('addressRegion', TextType::class, [
-            'required' => false,
-        ])->add('postcode', TextType::class, [
-            'required' => false,
-        ])->add('addressCountry', CountryType::class, [
-            'required'          => false,
-            'preferred_choices' => ['GB'],
-        ])->add('addressUrl', TextType::class, [
-            'label' => 'Address URL',
-            'required' => false,
-            'constraints' => [
-                new Url(),
-            ],
-        ])->add('lat', TextType::class, [
-            'label' => 'Latitude',
-            'required' => false,
-        ])->add('lng', TextType::class, [
-            'label' => 'Longitude',
-            'required' => false,
+        ])->add('defaultAddress', EntityType::class, [
+            'required'     => false,
+            'class'        => Address::class,
+            'choice_label' => function (Address $address): string {
+                return $address->getName() ?? $address->getAddress();
+            },
         ])->add('facebook', TextType::class, [
-            'label'    => 'Facebook URL',
-            'required' => false,
+            'label'       => 'Facebook URL',
+            'required'    => false,
             'constraints' => [
                 new Url(),
             ],
         ])->add('twitter', TextType::class, [
-            'label'    => 'Twitter URL',
-            'required' => false,
+            'label'       => 'Twitter URL',
+            'required'    => false,
             'constraints' => [
                 new Url(),
             ],
         ])->add('instagram', TextType::class, [
-            'label'    => 'Instagram URL',
-            'required' => false,
+            'label'       => 'Instagram URL',
+            'required'    => false,
             'constraints' => [
                 new Url(),
             ],
         ])->add('youtube', TextType::class, [
-            'label'    => 'Youtube URL',
-            'required' => false,
+            'label'       => 'Youtube URL',
+            'required'    => false,
             'constraints' => [
                 new Url(),
             ],
         ])->add('vimeo', TextType::class, [
-            'label'    => 'Vimeo URL',
-            'required' => false,
+            'label'       => 'Vimeo URL',
+            'required'    => false,
             'constraints' => [
                 new Url(),
             ],
         ])->add('pinterest', TextType::class, [
-            'label'    => 'Pinterest URL',
-            'required' => false,
+            'label'       => 'Pinterest URL',
+            'required'    => false,
             'constraints' => [
                 new Url(),
             ],
         ])->add('linkedin', TextType::class, [
-            'label'    => 'Linked In URL',
-            'required' => false,
+            'label'       => 'Linked In URL',
+            'required'    => false,
             'constraints' => [
                 new Url(),
             ],
         ])->add('dribbble', TextType::class, [
-            'label'    => 'Dribbble URL',
-            'required' => false,
+            'label'       => 'Dribbble URL',
+            'required'    => false,
             'constraints' => [
                 new Url(),
             ],
         ])->add('email', EmailType::class, [
-            'required' => false,
+            'required'    => false,
             'constraints' => [
-                new Email()
+                new Email(),
             ],
         ])->add('phone', PhoneNumberType::class, [
             'required'    => false,

@@ -16,10 +16,17 @@ Add the following to your `/config/routes.yaml`
 superrbkunstmaancompanybundle_company_admin_list:
     resource: '@SuperrbKunstmaanCompanyBundle/Controller/CompanyAdminListController.php'
     type:     annotation
-    prefix:   /admin/company
+    prefix:   /%kunstmaan_admin.admin_prefix%/company
+
+superrbkunstmaancompanybundle_address_admin_list:
+    resource: '@SuperrbKunstmaanCompanyBundle/Controller/AddressAdminListController.php'
+    type:     annotation
+    prefix:   /%kunstmaan_admin.admin_prefix%/company/address
 ```
 
 ### Step 3: Generate Database Tables
+
+> **IMPORTANT:** If upgrading KunstmaanCompanyBundle from 1.x.x to 2.x.x, you must run `bin/console superrb:kunstmaan-company:migrate-addresses` prior to running any Doctrine schema updates, otherwise you will lose existing address data.
 
 You can use Doctrine Migrations or a schema update, it is your choice
 

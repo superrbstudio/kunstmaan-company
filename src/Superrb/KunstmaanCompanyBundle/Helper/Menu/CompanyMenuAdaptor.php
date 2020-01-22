@@ -30,5 +30,19 @@ class CompanyMenuAdaptor implements MenuAdaptorInterface
             }
             $children[] = $menuItem;
         }
+
+        if (!is_null($parent) && 'KunstmaanAdminBundle_settings' === $parent->getRoute()) {
+            $menuItem = new MenuItem($menu);
+            $menuItem
+                ->setRoute('superrbkunstmaancompanybundle_admin_address')
+                ->setLabel('Company Addresses')
+                ->setUniqueId('Company Addresses')
+                ->setParent($parent);
+            if (0 === stripos($request->attributes->get('_route'), $menuItem->getRoute())) {
+                $menuItem->setActive(true);
+                $parent->setActive(true);
+            }
+            $children[] = $menuItem;
+        }
     }
 }
