@@ -5,7 +5,7 @@ namespace Superrb\KunstmaanCompanyBundle\Extension;
 use Doctrine\ORM\EntityManagerInterface;
 use Superrb\KunstmaanCompanyBundle\Entity\Company;
 use Superrb\KunstmaanCompanyBundle\SuperrbKunstmaanCompanyBundle;
-use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
 use Twig\TwigFunction;
 
 /**
@@ -24,14 +24,17 @@ class CompanyTwigExtension extends \Twig_Extension implements \Twig_Extension_Gl
     protected $entityManager;
 
     /**
-     * @var EngineInterface
+     * @var Environment
      */
     protected $templating;
 
     /**
      * CompanyTwigExtension constructor.
+     * @param EntityManagerInterface $em
+     * @param Environment $twigEngine
+     * @throws \Doctrine\DBAL\DBALException
      */
-    public function __construct(EntityManagerInterface $em, EngineInterface $twigEngine)
+    public function __construct(EntityManagerInterface $em, Environment $twigEngine)
     {
         $this->setEntityManager($em);
         $this->setTemplating($twigEngine);
@@ -60,6 +63,9 @@ class CompanyTwigExtension extends \Twig_Extension implements \Twig_Extension_Gl
         ];
     }
 
+    /**
+     * @return array|TwigFunction[]
+     */
     public function getFunctions()
     {
         return [
@@ -75,6 +81,12 @@ class CompanyTwigExtension extends \Twig_Extension implements \Twig_Extension_Gl
         return 'SuperrbKunstmaanCompanyBundle:TwigExtension';
     }
 
+    /**
+     * @return string
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function generateCompanySchema()
     {
         return $this->getTemplating()->render('@SuperrbKunstmaanCompany/Twig/companySchema.html.twig', [
@@ -82,11 +94,18 @@ class CompanyTwigExtension extends \Twig_Extension implements \Twig_Extension_Gl
         ]);
     }
 
+    /**
+     * @return Company|null
+     */
     public function getCompany(): ?Company
     {
         return $this->company;
     }
 
+    /**
+     * @param Company|null $company
+     * @return CompanyTwigExtension
+     */
     public function setCompany(?Company $company): CompanyTwigExtension
     {
         if (!($company instanceof Company)) {
@@ -98,11 +117,18 @@ class CompanyTwigExtension extends \Twig_Extension implements \Twig_Extension_Gl
         return $this;
     }
 
+    /**
+     * @return EntityManagerInterface
+     */
     public function getEntityManager(): EntityManagerInterface
     {
         return $this->entityManager;
     }
 
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @return CompanyTwigExtension
+     */
     public function setEntityManager(EntityManagerInterface $entityManager): CompanyTwigExtension
     {
         $this->entityManager = $entityManager;
@@ -110,12 +136,19 @@ class CompanyTwigExtension extends \Twig_Extension implements \Twig_Extension_Gl
         return $this;
     }
 
-    public function getTemplating(): EngineInterface
+    /**
+     * @return Environment
+     */
+    public function getTemplating(): Environment
     {
         return $this->templating;
     }
 
-    public function setTemplating(EngineInterface $templating): CompanyTwigExtension
+    /**
+     * @param Environment $templating
+     * @return CompanyTwigExtension
+     */
+    public function setTemplating(Environment $templating): CompanyTwigExtension
     {
         $this->templating = $templating;
 
