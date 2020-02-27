@@ -844,6 +844,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      */
     public function __construct()
     {
+        $this->addresses = new ArrayCollection();
         $this->days = new ArrayCollection();
     }
 
