@@ -14,7 +14,7 @@
     ],
     "require": {
         "kunstmaan/cms-pack": "~1.0",
-        "superrb/kunstmaan-addons": "^1.0"
+        "superrb/kunstmaan-addons": "^2.0"
     },
     "autoload": {
         "psr-4": {"Superrb\\": "src/Superrb/"}
