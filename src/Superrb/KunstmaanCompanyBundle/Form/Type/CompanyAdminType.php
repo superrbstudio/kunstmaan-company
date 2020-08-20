@@ -109,13 +109,13 @@ class CompanyAdminType extends AbstractType
             'required'    => true,
             'mediatype'   => 'image',
             'constraints' => [new Assert\Media([
-                'mimeTypes' => ['image/png', 'image/jpg', 'image/jpeg', 'image/svg+xml'],
+                'mimeTypes' => ['image/png', 'image/jpg', 'image/jpeg', 'image/svg+xml', 'image/svg'],
             ])],
         ])->add('image', MediaType::class, [
             'required'    => true,
             'mediatype'   => 'image',
             'constraints' => [new Assert\Media([
-                'mimeTypes' => ['image/png', 'image/jpg', 'image/jpeg', 'image/svg+xml'],
+                'mimeTypes' => ['image/png', 'image/jpg', 'image/jpeg', 'image/svg+xml', 'image/svg'],
             ])],
         ])->add('days', CollectionType::class, [
             'label'        => 'Opening Hours',
