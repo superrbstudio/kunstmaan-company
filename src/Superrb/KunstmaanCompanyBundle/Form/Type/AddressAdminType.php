@@ -34,6 +34,9 @@ class AddressAdminType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        //set the locale from the current request
+        $locale = $options['currentRequest'];
+
         $builder->add('name', TextType::class, [
             'required' => false,
         ]);
@@ -88,6 +91,9 @@ class AddressAdminType extends AbstractType
             'required'     => true,
             'class'        => Company::class,
             'choice_label' => 'companyName',
+        ]);
+        $builder->add('locale', HiddenType::class, [
+            'data' =>  $locale->getLocale(),
         ]);
     }
 

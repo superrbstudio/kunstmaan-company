@@ -19,10 +19,12 @@ class CompanyAdminListController extends Controller
     {
         $em              = $this->getDoctrine()->getManager();
         $repo            = $em->getRepository('SuperrbKunstmaanCompanyBundle:Company');
-        $company         = $repo->findOneBy(['id' => 1]);
+
+        $company         = $repo->findOneBy(['locale' => $request->getLocale()]);
 
         if (!$company) {
             $company = new Company();
+            $company->setLocale($request->getLocale());
         }
 
         $form = $this->createForm(CompanyAdminType::class, $company, [

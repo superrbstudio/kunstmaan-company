@@ -5,6 +5,7 @@ namespace Superrb\KunstmaanCompanyBundle\Extension;
 use Doctrine\ORM\EntityManagerInterface;
 use Superrb\KunstmaanCompanyBundle\Entity\Company;
 use Superrb\KunstmaanCompanyBundle\SuperrbKunstmaanCompanyBundle;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Environment;
 use Twig\TwigFunction;
 
@@ -29,15 +30,27 @@ class CompanyTwigExtension extends \Twig_Extension implements \Twig_Extension_Gl
     protected $templating;
 
     /**
+     * @var RequestStack
+     */
+    protected $requestStack;
+
+    /**
      * CompanyTwigExtension constructor.
      * @param EntityManagerInterface $em
      * @param Environment $twigEngine
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function __construct(EntityManagerInterface $em, Environment $twigEngine)
+    public function __construct(EntityManagerInterface $em, Environment $twigEngine, RequestStack $requestStack)
     {
         $this->setEntityManager($em);
         $this->setTemplating($twigEngine);
+        $request = $requestStack->getCurrentRequest();
+
+        $locale = '';
+
+        if ($request) {
+            $locale = $request->getLocale();
+        }
 
         // Don't attempt to load company unless migration has been run, otherwise Doctrine errors prevent
         // the migration command from initialising
@@ -50,7 +63,7 @@ class CompanyTwigExtension extends \Twig_Extension implements \Twig_Extension_Gl
             }
         }
 
-        $this->setCompany($this->getEntityManager()->getRepository('SuperrbKunstmaanCompanyBundle:Company')->findOneBy(['id' => 1]));
+        $this->setCompany($this->getEntityManager()->getRepository('SuperrbKunstmaanCompanyBundle:Company')->findOneBy(['locale' => $locale]));
     }
 
     /**
