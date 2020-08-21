@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -36,6 +37,7 @@ class CompanyAdminType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
+
         $builder->add('companyName', TextType::class, [
             'required' => true,
         ])->add('description', TextareaType::class, [
@@ -131,6 +133,7 @@ class CompanyAdminType extends AbstractType
                 'nested_sortable'       => true,
                 'nested_sortable_field' => 'displayOrder',
             ],
+        ])->add('locale', HiddenType::class, [
         ])->add('submit', SubmitType::class, [
             'label' => 'Save',
             'attr'  => [

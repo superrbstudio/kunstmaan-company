@@ -153,6 +153,13 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      */
     private $days;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="locale", type="string", length=255)
+     */
+    private $locale;
+
     public function deepClone()
     {
         $days       = $this->getDays();
@@ -885,5 +892,29 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     public function getDays(): Collection
     {
         return $this->days;
+    }
+
+    /**
+     * Set locale
+     *
+     * @param string $locale
+     *
+     * @return self
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Get locale
+     *
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
     }
 }
