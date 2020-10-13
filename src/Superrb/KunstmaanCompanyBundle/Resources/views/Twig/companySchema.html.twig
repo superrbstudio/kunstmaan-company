@@ -27,13 +27,7 @@
         {% if company.phone is not empty %}"telephone": "{{ company.phone | phone_number_format('INTERNATIONAL')  }}",{% endif %}
         {% if company.email is not empty %}"email" : "{{ company.email }}",{% endif %}
         "name": "{{company.companyName}}",
-        {% if company.facebook is not empty or company.twitter is not empty or company.instagram is not empty %}
-        "sameAs" : [
-            "{{ company.facebook }}",
-            "{{ company.twitter }}",
-            "{{ company.instagram }}"
-        ],
-        {% endif %}
+        "sameAs": [{{ company.sameAsForSchema | raw }}],
         "openingHoursSpecification" :  [{{openingHours|join(',')|raw }}]
     }
 </script>

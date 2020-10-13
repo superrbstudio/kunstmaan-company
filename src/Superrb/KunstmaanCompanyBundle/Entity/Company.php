@@ -886,4 +886,47 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     {
         return $this->days;
     }
+
+    /**
+     * Return JSON string of 'sameAs' for company schema
+     *
+     * @return string
+     */
+    public function getSameAsForSchema(): string {
+        $items = [];
+
+        if($this->getFacebook()) {
+            $items[] = $this->getFacebook();
+        }
+
+        if($this->getTwitter()) {
+            $items[] = $this->getTwitter();
+        }
+
+        if($this->getInstagram()) {
+            $items[] = $this->getInstagram();
+        }
+
+        if($this->getYoutube()) {
+            $items[] = $this->getYoutube();
+        }
+
+        if($this->getVimeo()) {
+            $items[] = $this->getVimeo();
+        }
+
+        if($this->getPinterest()) {
+            $items[] = $this->getPinterest();
+        }
+
+        if($this->getLinkedin()) {
+            $items[] = $this->getLinkedin();
+        }
+
+        if($this->getDribbble()) {
+            $items[] = $this->getDribbble();
+        }
+
+        return '"' . implode('","', $items) . '"';
+    }
 }
