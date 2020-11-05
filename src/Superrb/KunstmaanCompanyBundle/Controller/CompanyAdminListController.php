@@ -42,8 +42,8 @@ class CompanyAdminListController extends Controller
             }
         }
 
-        return $this->render('SuperrbKunstmaanCompanyBundle:Company:index.html.twig', [
-            'form'         => $form->createView(),
+        return $this->render('@SuperrbKunstmaanCompany/Company/index.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 }
