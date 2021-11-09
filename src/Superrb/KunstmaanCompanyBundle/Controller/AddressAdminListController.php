@@ -3,12 +3,12 @@
 namespace Superrb\KunstmaanCompanyBundle\Controller;
 
 use Kunstmaan\AdminListBundle\AdminList\Configurator\AdminListConfiguratorInterface;
-use Kunstmaan\AdminListBundle\Controller\AdminListController;
+use Kunstmaan\AdminListBundle\Controller\AbstractAdminListController;
 use Superrb\KunstmaanCompanyBundle\AdminList\AddressAdminListConfigurator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AddressAdminListController extends AdminListController
+class AddressAdminListController extends AbstractAdminListController
 {
     /**
      * @var AdminListConfiguratorInterface

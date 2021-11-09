@@ -2,13 +2,13 @@
 
 namespace Superrb\KunstmaanCompanyBundle\Controller;
 
+use Kunstmaan\AdminListBundle\Controller\AbstractAdminListController;
 use Superrb\KunstmaanCompanyBundle\Entity\Company;
 use Superrb\KunstmaanCompanyBundle\Form\Type\CompanyAdminType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CompanyAdminListController extends Controller
+class CompanyAdminListController extends AbstractAdminListController
 {
     /**
      * @Route("/", name="superrbkunstmaancompanybundle_admin_company")
