@@ -5,6 +5,7 @@ namespace Superrb\KunstmaanCompanyBundle\Controller;
 use Kunstmaan\AdminListBundle\Controller\AbstractAdminListController;
 use Superrb\KunstmaanCompanyBundle\Entity\Company;
 use Superrb\KunstmaanCompanyBundle\Form\Type\CompanyAdminType;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 

@@ -18,6 +18,12 @@ services:
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
+    Superrb\KunstmaanCompanyBundle\Controller\:
+        autowire: true
+        autoconfigure: true
+        resource: "../../Controller"
+        tags: [ "controller.service_arguments" ]
+
     Superrb\KunstmaanCompanyBundle\Repository\:
         autowire: true
         autoconfigure: true
