@@ -2,11 +2,13 @@
 
 namespace Superrb\KunstmaanCompanyBundle\Extension;
 
+use Doctrine\DBAL\Result;
 use Doctrine\ORM\EntityManagerInterface;
 use Superrb\KunstmaanCompanyBundle\Entity\Company;
 use Superrb\KunstmaanCompanyBundle\SuperrbKunstmaanCompanyBundle;
 use Twig\Environment;
 use Twig\TwigFunction;
+use Doctrine\DBAL\Statement;
 
 /**
  * Class CompanyTwigExtension.
@@ -42,10 +44,13 @@ class CompanyTwigExtension extends \Twig_Extension implements \Twig_Extension_Gl
         // Don't attempt to load company unless migration has been run, otherwise Doctrine errors prevent
         // the migration command from initialising
         if (SuperrbKunstmaanCompanyBundle::VERSION >= 2) {
+            /** @var Statement $stmt */
             $stmt = $this->entityManager->getConnection()->prepare('SHOW COLUMNS FROM `skcb_companies` LIKE \'default_address_id\'');
-            $stmt->execute();
 
-            if (0 === count($stmt->fetchAll())) {
+            /** @var Result $result */
+            $result = $stmt->executeQuery();
+
+            if (0 === count($result->fetchAllAssociative())) {
                 return;
             }
         }
