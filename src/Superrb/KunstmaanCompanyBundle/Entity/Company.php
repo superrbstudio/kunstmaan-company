@@ -226,6 +226,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
     /**
      * @param mixed $offset
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         if ($this->offsetExists($offset)) {
