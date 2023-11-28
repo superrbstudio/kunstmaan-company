@@ -175,6 +175,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string
      */
+    #[\ReturnTypeWillChange]
     private function getterForOffset($offset)
     {
         return 'get'.ucwords($offset);
@@ -185,6 +186,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return string
      */
+    #[\ReturnTypeWillChange]
     private function setterForOffset($offset)
     {
         return 'set'.ucwords($offset);
@@ -195,6 +197,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         if ($this->offsetExists($offset)) {
@@ -206,6 +209,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      * @param mixed $offset
      * @param mixed $value
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         if ($this->offsetExists($offset)) {
@@ -218,6 +222,7 @@ class Company extends AbstractEntity implements ArrayAccess, DeepCloneInterface
      *
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return method_exists($this, $this->getterForOffset($offset));
