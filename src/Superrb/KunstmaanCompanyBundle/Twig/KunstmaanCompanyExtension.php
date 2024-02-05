@@ -1,23 +1,24 @@
 <?php
 
-namespace Superrb\KunstmaanCompanyBundle\Extension;
+namespace Superrb\KunstmaanCompanyBundle\Twig;
 
+use App\Entity\Pages\CareersPage;
+use App\Entity\Pages\WorkPage;
 use Doctrine\DBAL\Result;
+use Doctrine\DBAL\Statement;
 use Doctrine\ORM\EntityManagerInterface;
 use Superrb\KunstmaanCompanyBundle\Entity\Company;
 use Superrb\KunstmaanCompanyBundle\SuperrbKunstmaanCompanyBundle;
 use Twig\Environment;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 use Twig\TwigFunction;
-use Doctrine\DBAL\Statement;
 
 /**
- * Class CompanyTwigExtension.
+ * Class AppExtension.
  */
-class CompanyTwigExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInterface
+class KunstmaanCompanyExtension extends AbstractExtension
 {
-    /**
-     * @var Company|null
-     */
     protected $company;
 
     /**
@@ -31,7 +32,6 @@ class CompanyTwigExtension extends \Twig_Extension implements \Twig_Extension_Gl
     protected $templating;
 
     /**
-     * CompanyTwigExtension constructor.
      * @param EntityManagerInterface $em
      * @param Environment $twigEngine
      * @throws \Doctrine\DBAL\DBALException
@@ -58,32 +58,12 @@ class CompanyTwigExtension extends \Twig_Extension implements \Twig_Extension_Gl
         $this->setCompany($this->getEntityManager()->getRepository('SuperrbKunstmaanCompanyBundle:Company')->findOneBy(['id' => 1]));
     }
 
-    /**
-     * @return array
-     */
-    public function getGlobals()
-    {
-        return [
-            'company'       => $this->company,
-        ];
-    }
-
-    /**
-     * @return array|TwigFunction[]
-     */
     public function getFunctions()
     {
         return [
-            new TwigFunction('generate_company_schema', [$this, 'generateCompanySchema']),
+            new TwigFunction('generate_company_schema', $this->generateCompanySchema(...)),
+            new TwigFunction('get_company', $this->getCompany(...)),
         ];
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'SuperrbKunstmaanCompanyBundle:TwigExtension';
     }
 
     /**
@@ -102,16 +82,16 @@ class CompanyTwigExtension extends \Twig_Extension implements \Twig_Extension_Gl
     /**
      * @return Company|null
      */
-    public function getCompany(): ?Company
+    public function getCompany(): Company
     {
         return $this->company;
     }
 
     /**
      * @param Company|null $company
-     * @return CompanyTwigExtension
+     * @return self
      */
-    public function setCompany(?Company $company): CompanyTwigExtension
+    public function setCompany(?Company $company): KunstmaanCompanyExtension
     {
         if (!($company instanceof Company)) {
             $this->company = new Company();
@@ -132,9 +112,9 @@ class CompanyTwigExtension extends \Twig_Extension implements \Twig_Extension_Gl
 
     /**
      * @param EntityManagerInterface $entityManager
-     * @return CompanyTwigExtension
+     * @return self
      */
-    public function setEntityManager(EntityManagerInterface $entityManager): CompanyTwigExtension
+    public function setEntityManager(EntityManagerInterface $entityManager): KunstmaanCompanyExtension
     {
         $this->entityManager = $entityManager;
 
@@ -151,9 +131,9 @@ class CompanyTwigExtension extends \Twig_Extension implements \Twig_Extension_Gl
 
     /**
      * @param Environment $templating
-     * @return CompanyTwigExtension
+     * @return self
      */
-    public function setTemplating(Environment $templating): CompanyTwigExtension
+    public function setTemplating(Environment $templating): KunstmaanCompanyExtension
     {
         $this->templating = $templating;
 

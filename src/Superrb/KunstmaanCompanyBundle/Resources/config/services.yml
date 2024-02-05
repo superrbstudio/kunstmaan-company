@@ -4,7 +4,7 @@ services:
         tags:
             - { name: "kunstmaan_admin.menu.adaptor" }
     SuperrbKunstmaanCompanyBundle.company.twig_extension:
-        class: Superrb\KunstmaanCompanyBundle\Extension\CompanyTwigExtension
+        class: Superrb\KunstmaanCompanyBundle\Twig\KunstmaanCompanyExtension
         arguments: ["@doctrine.orm.entity_manager", "@twig"]
         tags:
             - { name: twig.extension }
