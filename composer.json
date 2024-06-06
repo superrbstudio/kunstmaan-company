@@ -13,7 +13,7 @@
         }
     ],
     "require": {
-        "superrb/kunstmaan-addons": "^4.1"
+        "superrb/kunstmaan-addons": "^5.0"
     },
     "autoload": {
         "psr-4": {"Superrb\\": "src/Superrb/"}
