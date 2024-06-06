@@ -55,7 +55,7 @@ class KunstmaanCompanyExtension extends AbstractExtension
             }
         }
 
-        $this->setCompany($this->getEntityManager()->getRepository('SuperrbKunstmaanCompanyBundle:Company')->findOneBy(['id' => 1]));
+        $this->setCompany($this->getEntityManager()->getRepository(Company::class)->findOneBy(['id' => 1]));
     }
 
     public function getFunctions()

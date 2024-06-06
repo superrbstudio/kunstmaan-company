@@ -19,7 +19,7 @@ class CompanyAdminListController extends AbstractAdminListController
     public function indexAction(Request $request)
     {
         $em              = $this->getDoctrine()->getManager();
-        $repo            = $em->getRepository('SuperrbKunstmaanCompanyBundle:Company');
+        $repo            = $em->getRepository(Company::class);
         $company         = $repo->findOneBy(['id' => 1]);
 
         if (!$company) {
