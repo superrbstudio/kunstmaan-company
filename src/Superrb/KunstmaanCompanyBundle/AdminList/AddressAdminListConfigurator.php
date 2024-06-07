@@ -7,6 +7,7 @@ use Kunstmaan\AdminBundle\Helper\Security\Acl\AclHelper;
 use Kunstmaan\AdminListBundle\AdminList\Configurator\AbstractDoctrineORMAdminListConfigurator;
 use Kunstmaan\AdminListBundle\AdminList\FilterType\ORM;
 use Kunstmaan\AdminListBundle\AdminList\SortableInterface;
+use Superrb\KunstmaanCompanyBundle\Entity\Address;
 use Superrb\KunstmaanCompanyBundle\Form\Type\AddressAdminType;
 
 /**
@@ -72,14 +73,9 @@ class AddressAdminListConfigurator extends AbstractDoctrineORMAdminListConfigura
         return 'SuperrbKunstmaanCompanyBundle';
     }
 
-    /**
-     * Get entity name.
-     *
-     * @return string
-     */
-    public function getEntityName()
+    public function getEntityClass(): string
     {
-        return 'Address';
+        return Address::class;
     }
 
     /**

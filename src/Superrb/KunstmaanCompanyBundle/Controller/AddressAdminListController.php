@@ -30,7 +30,7 @@ class AddressAdminListController extends AbstractAdminListController
     /**
      * The index action.
      *
-     * @Route("/", name="superrbkunstmaancompanybundle_admin_address")
+     * @Route("/", name="superrb\kunstmaancompanybundle_admin_address")
      *
      * @param Request $request
      */
@@ -42,7 +42,7 @@ class AddressAdminListController extends AbstractAdminListController
     /**
      * The add action.
      *
-     * @Route("/add", name="superrbkunstmaancompanybundle_admin_address_add", methods={"GET", "POST"})
+     * @Route("/add", name="superrb\kunstmaancompanybundle_admin_address_add", methods={"GET", "POST"})
      *
      * @param Request $request
      *
@@ -59,7 +59,7 @@ class AddressAdminListController extends AbstractAdminListController
      * @param int     $id
      * @param Request $request
      *
-     * @Route("/{id}", requirements={"id" = "\d+"}, name="superrbkunstmaancompanybundle_admin_address_edit", methods={"GET", "POST"})
+     * @Route("/{id}", requirements={"id" = "\d+"}, name="superrb\kunstmaancompanybundle_admin_address_edit", methods={"GET", "POST"})
      *
      * @return array
      */
@@ -74,7 +74,7 @@ class AddressAdminListController extends AbstractAdminListController
      * @param int     $id
      * @param Request $request
      *
-     * @Route("/{id}/view", requirements={"id" = "\d+"}, name="superrbkunstmaancompanybundle_admin_address_view", methods={"GET"})
+     * @Route("/{id}/view", requirements={"id" = "\d+"}, name="superrb\kunstmaancompanybundle_admin_address_view", methods={"GET"})
      *
      * @return array
      */
@@ -89,7 +89,7 @@ class AddressAdminListController extends AbstractAdminListController
      * @param int     $id
      * @param Request $request
      *
-     * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="superrbkunstmaancompanybundle_admin_address_delete", methods={"GET", "POST"})
+     * @Route("/{id}/delete", requirements={"id" = "\d+"}, name="superrb\kunstmaancompanybundle_admin_address_delete", methods={"GET", "POST"})
      *
      * @return array
      */
@@ -104,7 +104,7 @@ class AddressAdminListController extends AbstractAdminListController
      * @param string  $_format
      * @param Request $request
      *
-     * @Route("/export.{_format}", requirements={"_format" = "csv|ods|xlsx"}, name="superrbkunstmaancompanybundle_admin_address_export", methods={"GET", "POST"})
+     * @Route("/export.{_format}", requirements={"_format" = "csv|ods|xlsx"}, name="superrb\kunstmaancompanybundle_admin_address_export", methods={"GET", "POST"})
      *
      * @return array
      */
@@ -119,7 +119,7 @@ class AddressAdminListController extends AbstractAdminListController
      * @param int     $id
      * @param Request $request
      *
-     * @Route("/{id}/move-up", requirements={"id" = "\d+"}, name="superrbkunstmaancompanybundle_admin_address_move_up", methods={"GET"})
+     * @Route("/{id}/move-up", requirements={"id" = "\d+"}, name="superrb\kunstmaancompanybundle_admin_address_move_up", methods={"GET"})
      *
      * @return array
      */
@@ -134,7 +134,7 @@ class AddressAdminListController extends AbstractAdminListController
      * @param int     $id
      * @param Request $request
      *
-     * @Route("/{id}/move-down", requirements={"id" = "\d+"}, name="superrbkunstmaancompanybundle_admin_address_move_down", methods={"GET"})
+     * @Route("/{id}/move-down", requirements={"id" = "\d+"}, name="superrb\kunstmaancompanybundle_admin_address_move_down", methods={"GET"})
      *
      * @return array
      */

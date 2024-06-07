@@ -20,7 +20,7 @@ class CompanyMenuAdaptor implements MenuAdaptorInterface
         if (!is_null($parent) && 'KunstmaanAdminBundle_settings' === $parent->getRoute()) {
             $menuItem = new MenuItem($menu);
             $menuItem
-                ->setRoute('superrbkunstmaancompanybundle_admin_company')
+                ->setRoute('superrb\kunstmaancompanybundle_admin_company')
                 ->setLabel('Company')
                 ->setUniqueId('Company')
                 ->setParent($parent);
@@ -34,7 +34,7 @@ class CompanyMenuAdaptor implements MenuAdaptorInterface
         if (!is_null($parent) && 'KunstmaanAdminBundle_settings' === $parent->getRoute()) {
             $menuItem = new MenuItem($menu);
             $menuItem
-                ->setRoute('superrbkunstmaancompanybundle_admin_address')
+                ->setRoute('superrb\kunstmaancompanybundle_admin_address')
                 ->setLabel('Company Addresses')
                 ->setUniqueId('Company Addresses')
                 ->setParent($parent);

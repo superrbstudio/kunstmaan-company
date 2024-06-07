@@ -2,6 +2,7 @@
 
 namespace Superrb\KunstmaanCompanyBundle\Controller;
 
+use Doctrine\ORM\EntityManager;
 use Kunstmaan\AdminListBundle\Controller\AbstractAdminListController;
 use Superrb\KunstmaanCompanyBundle\Entity\Company;
 use Superrb\KunstmaanCompanyBundle\Form\Type\CompanyAdminType;
@@ -12,14 +13,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class CompanyAdminListController extends AbstractAdminListController
 {
     /**
-     * @Route("/", name="superrbkunstmaancompanybundle_admin_company")
+     * @Route("/", name="superrb\kunstmaancompanybundle_admin_company")
      *
      * @param Request $request
      */
     public function indexAction(Request $request)
-    {
-        $em              = $this->getDoctrine()->getManager();
-        $repo            = $em->getRepository(Company::class);
+    {;
+        $repo            = $this->getEntityManager()->getRepository(Company::class);
         $company         = $repo->findOneBy(['id' => 1]);
 
         if (!$company) {
@@ -27,19 +27,19 @@ class CompanyAdminListController extends AbstractAdminListController
         }
 
         $form = $this->createForm(CompanyAdminType::class, $company, [
-            'action' => $this->generateUrl('superrbkunstmaancompanybundle_admin_company'),
+            'action' => $this->generateUrl('superrb\kunstmaancompanybundle_admin_company'),
             'method' => 'POST',
         ]);
 
         if ('POST' == $request->getMethod()) {
             $form->handleRequest($request);
 
-            if ($form->isValid()) {
-                $this->getDoctrine()->getManager()->persist($company);
-                $this->getDoctrine()->getManager()->flush();
-                $this->addFlash('success', $this->get('translator')->trans('kuma_company.forms.company.messages.add_success'));
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->getEntityManager()->persist($company);
+                $this->getEntityManager()->flush();
+                $this->addFlash('success', $this->container->get('translator')->trans('kuma_company.forms.company.messages.add_success'));
 
-                return $this->redirect($this->generateUrl('superrbkunstmaancompanybundle_admin_company'));
+                return $this->redirect($this->generateUrl('superrb\kunstmaancompanybundle_admin_company'));
             }
         }
 
